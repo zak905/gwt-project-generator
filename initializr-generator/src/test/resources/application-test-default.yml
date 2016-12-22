@@ -122,17 +122,7 @@ initializr:
       default: false
     - id: 1.8
       default: true
-  languages:
-    - name: Groovy
-      id: groovy
-      default: false
-    - name: Java
-      id: java
-      default: true
-    - name: Kotlin
-      id: kotlin
-      default: false
-  bootVersions:
+  gwtVersions:
     - name : Latest SNAPSHOT
       id: 1.2.0.BUILD-SNAPSHOT
       default: false

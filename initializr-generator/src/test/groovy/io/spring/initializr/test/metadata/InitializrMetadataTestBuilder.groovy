@@ -66,7 +66,7 @@ class InitializrMetadataTestBuilder {
 
 	InitializrMetadataTestBuilder addDefaults() {
 		addDefaultTypes().addDefaultPackagings().addDefaultJavaVersions()
-				.addDefaultLanguages().addDefaultBootVersions()
+				.addDefaultBootVersions()
 				.setGradleEnv('0.5.1.RELEASE').setKotlinEnv('1.0.1')
 	}
 
@@ -117,17 +117,7 @@ class InitializrMetadataTestBuilder {
 		this
 	}
 
-	InitializrMetadataTestBuilder addDefaultLanguages() {
-		addLanguage('java', true).addLanguage('groovy', false).addLanguage('kotlin', false)
-	}
 
-	InitializrMetadataTestBuilder addLanguage(String id, boolean defaultValue) {
-		builder.withCustomizer {
-			def language = new DefaultMetadataElement(id: id, name: id, default: defaultValue)
-			it.languages.content << language
-		}
-		this
-	}
 
 	InitializrMetadataTestBuilder addDefaultBootVersions() {
 		addBootVersion('1.1.2.RELEASE', false).addBootVersion('1.2.3.RELEASE', true)

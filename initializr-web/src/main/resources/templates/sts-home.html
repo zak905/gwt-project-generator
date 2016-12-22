@@ -65,12 +65,6 @@
                 <input type="radio" name="javaVersion" value="${it.id}"${it.default==true ? ' checked="true"' : ''}/>
                 ${it.name}
             </label><% } %>
-            <label>Language:</label>
-            <% languages.content.each { %>
-            <label class="radio">
-                <input type="radio" name="language" value="${it.id}"${it.default==true ? ' checked="true"' : ''}/>
-                ${it.name}
-            </label><% } %>
             <label>Spring Boot Version:</label>
             <% bootVersions.content.each { %>
             <label class="radio">

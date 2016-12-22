@@ -72,11 +72,6 @@ class ProjectRequestDocumentFactory {
 			document.invalidJavaVersion = true
 		}
 
-		document.language = request.language
-		if (request.language && !metadata.languages.get(request.language)) {
-			document.invalid = true
-			document.invalidLanguage = true
-		}
 
 		document.packaging = request.packaging
 		if (request.packaging && !metadata.packagings.get(request.packaging)) {

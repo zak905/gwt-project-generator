@@ -127,12 +127,7 @@ class ProjectRequest extends BasicProjectRequest {
 				throw new InvalidProjectRequestException("Unknown packaging '${this.packaging}' check project metadata")
 			}
 		}
-		if (this.language) {
-			def language = metadata.languages.get(this.language)
-			if (!language) {
-				throw new InvalidProjectRequestException("Unknown language '${this.language}' check project metadata")
-			}
-		}
+
 
 		if (!applicationName) {
 			this.applicationName = metadata.configuration.generateApplicationName(this.name)

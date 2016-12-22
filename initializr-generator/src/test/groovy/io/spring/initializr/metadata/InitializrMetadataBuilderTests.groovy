@@ -76,7 +76,6 @@ class InitializrMetadataBuilderTests {
 		assertEquals 2, metadata.bootVersions.content.size()
 		assertEquals 2, metadata.packagings.content.size()
 		assertEquals 1, metadata.javaVersions.content.size()
-		assertEquals 3, metadata.languages.content.size()
 		assertEquals 'metadata-merge', metadata.name.content
 		assertEquals 'Demo project for metadata merge', metadata.description.content
 		assertEquals 'org.acme', metadata.groupId.content

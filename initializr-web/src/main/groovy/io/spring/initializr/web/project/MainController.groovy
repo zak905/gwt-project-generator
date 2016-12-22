@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit
 
 import groovy.util.logging.Slf4j
 import io.spring.initializr.generator.BasicProjectRequest
-import io.spring.initializr.generator.CommandLineHelpGenerator
 import io.spring.initializr.generator.ProjectGenerator
 import io.spring.initializr.generator.ProjectRequest
 import io.spring.initializr.metadata.InitializrMetadataProvider
@@ -73,7 +72,6 @@ class MainController extends AbstractInitializrController {
 
 	private final ProjectGenerator projectGenerator
 	private final DependencyMetadataProvider dependencyMetadataProvider
-	private final CommandLineHelpGenerator commandLineHelpGenerator
 
 	MainController(InitializrMetadataProvider metadataProvider, GroovyTemplate groovyTemplate,
 				   ResourceUrlProvider resourceUrlProvider, ProjectGenerator projectGenerator,
@@ -81,7 +79,6 @@ class MainController extends AbstractInitializrController {
 		super(metadataProvider, resourceUrlProvider, groovyTemplate)
 		this.projectGenerator = projectGenerator
 		this.dependencyMetadataProvider = dependencyMetadataProvider
-		this.commandLineHelpGenerator = new CommandLineHelpGenerator(groovyTemplate)
 	}
 
 	@ModelAttribute
@@ -103,32 +100,6 @@ class MainController extends AbstractInitializrController {
 		'redirect:/'
 	}
 
-
-	@RequestMapping(value = "/", produces = ["text/plain"])
-	ResponseEntity<String> serviceCapabilitiesText(
-			@RequestHeader(value = HttpHeaders.USER_AGENT, required = false) String userAgent) {
-		String appUrl = generateAppUrl()
-		def metadata = metadataProvider.get()
-
-		def builder = ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN)
-		if (userAgent) {
-			Agent agent = Agent.fromUserAgent(userAgent)
-			if (CURL.equals(agent?.id)) {
-				def content = commandLineHelpGenerator.generateCurlCapabilities(metadata, appUrl)
-				return builder.eTag(createUniqueId(content)).body(content)
-			}
-			if (HTTPIE.equals(agent?.id)) {
-				def content = commandLineHelpGenerator.generateHttpieCapabilities(metadata, appUrl)
-				return builder.eTag(createUniqueId(content)).body(content)
-			}
-			if (SPRING_BOOT_CLI.equals(agent?.id)) {
-				def content = commandLineHelpGenerator.generateSpringBootCliCapabilities(metadata, appUrl)
-				return builder.eTag(createUniqueId(content)).body(content)
-			}
-		}
-		def content = commandLineHelpGenerator.generateGenericCapabilities(metadata, appUrl)
-		builder.eTag(createUniqueId(content)).body(content)
-	}
 
 	@RequestMapping(value = "/", produces = ["application/hal+json"])
 	ResponseEntity<String> serviceCapabilitiesHal() {
@@ -184,17 +155,6 @@ class MainController extends AbstractInitializrController {
 		renderHome('home.html')
 	}
 
-	@RequestMapping('/spring')
-	String spring() {
-		def url = metadataProvider.get().createCliDistributionURl('zip')
-		"redirect:$url"
-	}
-
-	@RequestMapping(value = ['/spring.tar.gz', 'spring.tgz'])
-	String springTgz() {
-		def url = metadataProvider.get().createCliDistributionURl('tar.gz')
-		"redirect:$url"
-	}
 
 	@RequestMapping('/pom')
 	@ResponseBody

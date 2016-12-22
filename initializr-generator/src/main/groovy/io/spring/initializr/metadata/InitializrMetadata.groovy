@@ -31,8 +31,8 @@ class InitializrMetadata {
 
 	final TypeCapability types = new TypeCapability()
 
-	final SingleSelectCapability bootVersions =
-			new SingleSelectCapability('bootVersion', 'Spring Boot Version', 'spring boot version')
+	final SingleSelectCapability gwtVersions =
+			new SingleSelectCapability('gwtVersions', 'Spring Boot Version', 'spring boot version')
 
 	final SingleSelectCapability packagings =
 			new SingleSelectCapability('packaging', 'Packaging', 'project packaging')
@@ -40,8 +40,6 @@ class InitializrMetadata {
 	final SingleSelectCapability javaVersions =
 			new SingleSelectCapability('javaVersion', 'Java Version', 'language level')
 
-	final SingleSelectCapability languages =
-			new SingleSelectCapability('language', 'Language', 'programming language')
 
 	final TextCapability name = new TextCapability('name', 'Name', 'project name (infer application name)')
 
@@ -54,6 +52,8 @@ class InitializrMetadata {
 	final TextCapability version = new TextCapability('version', 'Version', 'project version')
 
 	final TextCapability packageName = new PackageCapability(groupId)
+
+	final TextCapabiltity moduleName = new TextCapability('moduleName', 'module name', 'name of the GWT module');
 
 	InitializrMetadata() {
 		this(new InitializrConfiguration())
@@ -71,16 +71,16 @@ class InitializrMetadata {
 		this.configuration.merge(other.configuration)
 		this.dependencies.merge(other.dependencies)
 		this.types.merge(other.types)
-		this.bootVersions.merge(other.bootVersions)
+		this.gwtVersions.merge(other.gwtVersions)
 		this.packagings.merge(other.packagings)
 		this.javaVersions.merge(other.javaVersions)
-		this.languages.merge(other.languages)
 		this.name.merge(other.name)
 		this.description.merge(other.description)
 		this.groupId.merge(other.groupId)
 		this.artifactId.merge(other.artifactId)
 		this.version.merge(other.version)
 		this.packageName.merge(other.packageName)
+		this.moduleName.merge(other.moduleName)
 	}
 
 	/**
@@ -135,21 +135,13 @@ class InitializrMetadata {
 
 	}
 
-	/**
-	 * Create an URL suitable to download Spring Boot cli for the specified version and extension.
-	 */
-	String createCliDistributionURl(String extension) {
-		String bootVersion = defaultId(bootVersions)
-		configuration.env.artifactRepository + "org/springframework/boot/spring-boot-cli/" +
-				"$bootVersion/spring-boot-cli-$bootVersion-bin.$extension"
-	}
 
 	/**
 	 * Create a {@link BillOfMaterials} for the spring boot BOM.
 	 */
-	BillOfMaterials createSpringBootBom(String bootVersion, String versionProperty) {
+	BillOfMaterials createSpringBootBom(String gwtVersion, String versionProperty) {
 		new BillOfMaterials(groupId: 'org.springframework.boot', artifactId: 'spring-boot-dependencies',
-				version: bootVersion, versionProperty: versionProperty)
+				version: gwtVersion, versionProperty: versionProperty)
 	}
 
 	/**
@@ -158,16 +150,16 @@ class InitializrMetadata {
 	Map<String, ?> defaults() {
 		def defaults = [:]
 		defaults['type'] = defaultId(types)
-		defaults['bootVersion'] = defaultId(bootVersions)
+		defaults['gwtVersions'] = defaultId(gwtVersions)
 		defaults['packaging'] = defaultId(packagings)
 		defaults['javaVersion'] = defaultId(javaVersions)
-		defaults['language'] = defaultId(languages)
 		defaults['groupId'] = groupId.content
 		defaults['artifactId'] = artifactId.content
 		defaults['version'] = version.content
 		defaults['name'] = name.content
 		defaults['description'] = description.content
 		defaults['packageName'] = packageName.content
+		defaults['moduleName'] = moduleName.content
 		defaults
 	}
 

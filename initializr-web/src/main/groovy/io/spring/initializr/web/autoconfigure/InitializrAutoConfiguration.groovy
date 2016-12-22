@@ -123,7 +123,7 @@ class InitializrAutoConfiguration {
 	@ConditionalOnMissingBean(InitializrMetadataProvider)
 	InitializrMetadataProvider initializrMetadataProvider(InitializrProperties properties) {
 		def metadata = InitializrMetadataBuilder.fromInitializrProperties(properties).build()
-		new DefaultInitializrMetadataProvider(metadata, new RestTemplate())
+		new DefaultInitializrMetadataProvider(metadata)
 	}
 
 	@Bean

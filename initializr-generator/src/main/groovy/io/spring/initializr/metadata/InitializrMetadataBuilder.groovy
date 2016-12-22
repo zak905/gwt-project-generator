@@ -148,10 +148,9 @@ class InitializrMetadataBuilder {
 		void customize(InitializrMetadata metadata) {
 			metadata.dependencies.merge(properties.dependencies)
 			metadata.types.merge(properties.types)
-			metadata.bootVersions.merge(properties.bootVersions)
+			metadata.gwtVersions.merge(properties.gwtVersions)
 			metadata.packagings.merge(properties.packagings)
 			metadata.javaVersions.merge(properties.javaVersions)
-			metadata.languages.merge(properties.languages)
 			properties.groupId.apply(metadata.groupId)
 			properties.artifactId.apply(metadata.artifactId)
 			properties.version.apply(metadata.version)

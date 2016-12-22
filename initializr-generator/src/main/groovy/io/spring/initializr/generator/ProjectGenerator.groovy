@@ -144,33 +144,22 @@ class ProjectGenerator {
 
 		generateGitIgnore(dir, request)
 
-		def applicationName = request.applicationName
-		def language = request.language
+		def rootSourceCode = new File(dir, "src/main")
+		rootSourceCode.mkdirs()
+		write(rootSourceCode, "module.gwt.xml", model)
 
-		String codeLocation = language
-		def src = new File(new File(dir, "src/main/$codeLocation"), request.packageName.replace('.', '/'))
+		def src = new File(new File(dir, "src/main/java"), request.packageName.replace('.', '/'))
 		src.mkdirs()
-		def extension = (language.equals('kotlin') ? 'kt' : language)
-		write(new File(src, "${applicationName}.${extension}"), "Application.$extension", model)
+		write(new File(src, "App.java"), "App.java", model)
 
-		if (request.packaging == 'war') {
-			def fileName = "ServletInitializer.$extension"
-			write(new File(src, fileName), fileName, model)
-		}
-
-		def test = new File(new File(dir, "src/test/$codeLocation"), request.packageName.replace('.', '/'))
+		def test = new File(new File(dir, "src/test/java"), request.packageName.replace('.', '/'))
 		test.mkdirs()
 		setupTestModel(request, model)
-		write(new File(test, "${applicationName}Tests.${extension}"), "ApplicationTests.$extension", model)
+		write(new File(test, "AppTests.java"), "ApplicationTests.java", model)
 
 		def resources = new File(dir, 'src/main/resources')
 		resources.mkdirs()
-		new File(resources, 'application.properties').write('')
 
-		if (request.hasWebFacet()) {
-			new File(dir, 'src/main/resources/templates').mkdirs()
-			new File(dir, 'src/main/resources/static').mkdirs()
-		}
 		publishProjectGeneratedEvent(request)
 		rootDir
 

@@ -45,14 +45,6 @@ class InitializrService {
 		SpringApplication.run(InitializrService, args)
 	}
 
-	@Bean
-	@SuppressWarnings("deprecation")
-	LegacyStsController legacyStsController(InitializrMetadataProvider metadataProvider,
-											ResourceUrlProvider resourceUrlProvider,
-											GroovyTemplate groovyTemplate) {
-		new LegacyStsController(metadataProvider, resourceUrlProvider, groovyTemplate)
-	}
-
 	@Configuration
 	@EnableAsync
 	static class AsyncConfiguration extends AsyncConfigurerSupport {

@@ -53,17 +53,12 @@ class InitializrProperties extends InitializrConfiguration {
 	@JsonIgnore
 	final List<DefaultMetadataElement> javaVersions = []
 
-	/**
-	 * Available programming languages.
-	 */
-	@JsonIgnore
-	final List<DefaultMetadataElement> languages = []
 
 	/**
 	 * Available Spring Boot versions.
 	 */
 	@JsonIgnore
-	final List<DefaultMetadataElement> bootVersions = []
+	final List<DefaultMetadataElement> gwtVersions = []
 
 	/**
 	 * GroupId metadata.
@@ -100,6 +95,10 @@ class InitializrProperties extends InitializrConfiguration {
 	 */
 	@JsonIgnore
 	final SimpleElement packageName = new SimpleElement()
+
+
+	@JsonIgnore
+	final SimpleElement moduleName = new SimpleElement()
 
 
 	static class SimpleElement {

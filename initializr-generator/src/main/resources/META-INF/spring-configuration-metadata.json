@@ -257,12 +257,6 @@
       "sourceType": "io.spring.initializr.metadata.InitializrProperties"
     },
     {
-      "name": "initializr.languages",
-      "type": "java.util.List<io.spring.initializr.metadata.DefaultMetadataElement>",
-      "description": "Available programming languages.",
-      "sourceType": "io.spring.initializr.metadata.InitializrProperties"
-    },
-    {
       "name": "initializr.name.description",
       "type": "java.lang.String",
       "description": "Element description.",

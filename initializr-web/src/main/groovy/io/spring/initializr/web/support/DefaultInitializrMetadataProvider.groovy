@@ -35,42 +35,19 @@ import org.springframework.web.client.RestTemplate
 class DefaultInitializrMetadataProvider implements InitializrMetadataProvider {
 
 	private final InitializrMetadata metadata
-	private final RestTemplate restTemplate
 
-	DefaultInitializrMetadataProvider(InitializrMetadata metadata, RestTemplate restTemplate) {
+	DefaultInitializrMetadataProvider(InitializrMetadata metadata) {
 		this.metadata = metadata
-		this.restTemplate = restTemplate
 	}
 
 	@Override
 	@Cacheable(value = 'initializr', key = "'metadata'")
 	InitializrMetadata get() {
-		updateInitializrMetadata(metadata)
 		metadata
 	}
 
-	protected void updateInitializrMetadata(InitializrMetadata metadata) {
-		def bootVersions = fetchBootVersions()
-		if (bootVersions) {
-			if (!bootVersions.find { it.default }) { // No default specified
-				bootVersions[0].default = true
-			}
-			metadata.bootVersions.content.clear()
-			metadata.bootVersions.content.addAll(bootVersions)
-		}
-	}
 
-	protected List<DefaultMetadataElement> fetchBootVersions() {
-		def url = metadata.configuration.env.springBootMetadataUrl
-		if (url) {
-			try {
-				log.info("Fetching boot metadata from $url")
-				return new SpringBootMetadataReader(restTemplate, url).bootVersions
-			} catch (Exception e) {
-				log.warn('Failed to fetch spring boot metadata', e)
-			}
-		}
-		null
-	}
+
+
 
 }
