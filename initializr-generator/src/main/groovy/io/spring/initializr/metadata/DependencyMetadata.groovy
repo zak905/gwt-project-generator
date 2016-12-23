@@ -26,7 +26,7 @@ import io.spring.initializr.util.Version
  */
 class DependencyMetadata {
 
-	final Version bootVersion
+	final Version gwtVersion
 
 	final Map<String, Dependency> dependencies
 
@@ -34,9 +34,9 @@ class DependencyMetadata {
 
 	final Map<String, BillOfMaterials> boms
 
-	DependencyMetadata(Version bootVersion, Map<String, Dependency> dependencies,
+	DependencyMetadata(Version gwtVersion, Map<String, Dependency> dependencies,
 					   Map<String, Repository> repositories, Map<String, BillOfMaterials> boms) {
-		this.bootVersion = bootVersion
+		this.gwtVersion = gwtVersion
 		this.dependencies = dependencies
 		this.repositories = repositories
 		this.boms = boms

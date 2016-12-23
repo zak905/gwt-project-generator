@@ -32,11 +32,11 @@ import org.springframework.stereotype.Component
 @Component
 class SpringBoot2RequestPostProcessor extends ProjectRequestPostProcessorAdapter {
 
-	private static final VERSION_2_0_0_M1 = Version.parse('2.0.0.M1')
+	private static final VERSION_2_8_0 = Version.parse('2.8.0')
 
 	@Override
 	void postProcessAfterResolution(ProjectRequest request, InitializrMetadata metadata) {
-		if (VERSION_2_0_0_M1 <= Version.safeParse(request.bootVersion)) {
+		if (VERSION_2_8_0 <= Version.safeParse(request.gwtVersion)) {
 			request.javaVersion = '1.8'
 		}
 	}

@@ -89,13 +89,13 @@ class BillOfMaterials {
 	 * a {@link BillOfMaterials} instance that holds the version, repositories and
 	 * additional BOMs to use, if any.
 	 */
-	BillOfMaterials resolve(Version bootVersion) {
+	BillOfMaterials resolve(Version gwtVersion) {
 		if (!mappings) {
 			return this
 		}
 
 		for (Mapping mapping : mappings) {
-			if (mapping.range.match(bootVersion)) {
+			if (mapping.range.match(gwtVersion)) {
 				def resolvedBom = new BillOfMaterials(groupId: groupId, artifactId: artifactId,
 						version: mapping.version, versionProperty: versionProperty)
 				resolvedBom.repositories += mapping.repositories ?: repositories
@@ -103,7 +103,7 @@ class BillOfMaterials {
 				return resolvedBom
 			}
 		}
-		throw new IllegalStateException("No suitable mapping was found for $this and version $bootVersion")
+		throw new IllegalStateException("No suitable mapping was found for $this and version $gwtVersion")
 	}
 
 	@ToString(ignoreNulls = true, includePackage = false)

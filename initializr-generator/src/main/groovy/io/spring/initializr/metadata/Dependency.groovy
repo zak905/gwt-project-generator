@@ -181,9 +181,9 @@ class Dependency extends MetadataElement {
 	 * Resolve this instance according to the specified Spring Boot {@link Version}. Return
 	 * a {@link Dependency} instance that has its state resolved against the specified version.
 	 */
-	Dependency resolve(Version bootVersion) {
+	Dependency resolve(Version gwtVersion) {
 		for (Mapping mapping : mappings) {
-			if (mapping.range.match(bootVersion)) {
+			if (mapping.range.match(gwtVersion)) {
 				def dependency = new Dependency(this)
 				dependency.groupId = mapping.groupId ? mapping.groupId : this.groupId
 				dependency.artifactId = mapping.artifactId ? mapping.artifactId : this.artifactId

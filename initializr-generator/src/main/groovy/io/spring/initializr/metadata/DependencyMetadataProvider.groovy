@@ -26,8 +26,8 @@ import io.spring.initializr.util.Version
 interface DependencyMetadataProvider {
 
 	/**
-	 * Return the dependency metadata to use for the specified {@code bootVersion}.
+	 * Return the dependency metadata to use for the specified {@code gwtVersion}.
 	 */
-	DependencyMetadata get(InitializrMetadata metadata, Version bootVersion)
+	DependencyMetadata get(InitializrMetadata metadata, Version gwtVersion)
 
 }

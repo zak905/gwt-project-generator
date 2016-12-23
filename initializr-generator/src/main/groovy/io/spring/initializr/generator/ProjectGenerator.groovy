@@ -41,16 +41,6 @@ import static io.spring.initializr.metadata.InitializrConfiguration.Env.Maven.Pa
 @Slf4j
 class ProjectGenerator {
 
-	private static final VERSION_1_2_0_RC1 = Version.parse('1.2.0.RC1')
-
-	private static final VERSION_1_3_0_M1 = Version.parse('1.3.0.M1')
-
-	private static final VERSION_1_4_0_M2 = Version.parse('1.4.0.M2')
-
-	private static final VERSION_1_4_0_M3 = Version.parse('1.4.0.M3')
-
-	private static final VERSION_1_4_2_M1 = Version.parse('1.4.2.M1')
-
 	@Autowired
 	ApplicationEventPublisher eventPublisher
 
@@ -135,18 +125,15 @@ class ProjectGenerator {
 		if (isGradleBuild(request)) {
 			def gradle = new String(doGenerateGradleBuild(model))
 			new File(dir, 'build.gradle').write(gradle)
-			writeGradleWrapper(dir)
 		} else {
+			log.info("pom model " + model.toMapString())
 			def pom = new String(doGenerateMavenPom(model))
 			new File(dir, 'pom.xml').write(pom)
-			writeMavenWrapper(dir)
 		}
 
 		generateGitIgnore(dir, request)
 
-		def rootSourceCode = new File(dir, "src/main")
-		rootSourceCode.mkdirs()
-		write(rootSourceCode, "module.gwt.xml", model)
+
 
 		def src = new File(new File(dir, "src/main/java"), request.packageName.replace('.', '/'))
 		src.mkdirs()
@@ -159,6 +146,9 @@ class ProjectGenerator {
 
 		def resources = new File(dir, 'src/main/resources')
 		resources.mkdirs()
+
+	/*	def rootSourceCode = new File(dir, "src/main")
+		write(rootSourceCode, "module.gwt.xml", model)*/
 
 		publishProjectGeneratedEvent(request)
 		rootDir
@@ -221,7 +211,7 @@ class ProjectGenerator {
 	 * @return a model for that request
 	 */
 	protected Map resolveModel(ProjectRequest originalRequest) {
-		Assert.notNull originalRequest.bootVersion, 'boot version must not be null'
+		Assert.notNull originalRequest.gwtVersion, 'gwt version must not be null'
 		def model = [:]
 		def metadata = metadataProvider.get()
 
@@ -232,18 +222,6 @@ class ProjectGenerator {
 		def dependencyIds = dependencies.collect { it.id }
 		log.info("Processing request{type=$request.type, dependencies=$dependencyIds}")
 
-		if (isMavenBuild(request)) {
-			ParentPom parentPom = metadata.configuration.env.maven.resolveParentPom(request.bootVersion)
-			if (parentPom.includeSpringBootBom && !request.boms['spring-boot']) {
-				request.boms['spring-boot'] = metadata.createSpringBootBom(
-						request.bootVersion, 'spring-boot.version')
-			}
-
-			model['mavenParentGroupId'] = parentPom.groupId
-			model['mavenParentArtifactId'] = parentPom.artifactId
-			model['mavenParentVersion'] = parentPom.version
-			model['includeSpringBootBom'] = parentPom.includeSpringBootBom
-		}
 
 		model['compileDependencies'] = filterDependencies(dependencies, Dependency.SCOPE_COMPILE)
 		model['runtimeDependencies'] = filterDependencies(dependencies, Dependency.SCOPE_RUNTIME)
@@ -257,28 +235,6 @@ class ProjectGenerator {
 			}
 		}
 
-		// Add various versions
-		model['dependencyManagementPluginVersion'] = metadata.configuration.env.gradle.dependencyManagementPluginVersion
-		model['kotlinVersion'] = metadata.configuration.env.kotlin.version
-
-		// @SpringBootApplication available as from 1.2.0.RC1
-		model['useSpringBootApplication'] = VERSION_1_2_0_RC1
-				.compareTo(Version.safeParse(request.bootVersion)) <= 0
-
-		// Gradle plugin has changed as from 1.3.0
-		model['bootOneThreeAvailable'] = VERSION_1_3_0_M1
-				.compareTo(Version.safeParse(request.bootVersion)) <= 0
-
-		// Gradle plugin has changed again as from 1.4.2
-		model['springBootPluginName'] = (VERSION_1_4_2_M1.compareTo(
-				Version.safeParse(request.bootVersion)) <= 0 ? 'org.springframework.boot' : 'spring-boot')
-
-		// New testing stuff
-		model['newTestInfrastructure'] = isNewTestInfrastructureAvailable(request)
-
-		// New Servlet Initializer location
-		model['newServletInitializer']  = isNewServletInitializerAvailable(request)
-
 		// Append the project request to the model
 		request.properties.each { model[it.key] = it.value }
 
@@ -288,23 +244,7 @@ class ProjectGenerator {
 	protected void setupTestModel(ProjectRequest request, Map<String, Object> model) {
 		String imports = ''
 		String testAnnotations = ''
-		def newTestInfrastructure = isNewTestInfrastructureAvailable(request)
-		if (newTestInfrastructure) {
-			imports += String.format(generateImport('org.springframework.boot.test.context.SpringBootTest',
-					request.language) + "%n")
-			imports += String.format(generateImport('org.springframework.test.context.junit4.SpringRunner',
-					request.language) + "%n")
-		} else {
-			imports += String.format(generateImport('org.springframework.boot.test.SpringApplicationConfiguration',
-					request.language) + "%n")
-			imports += String.format(generateImport('org.springframework.test.context.junit4.SpringJUnit4ClassRunner',
-					request.language) + "%n")
-		}
-		if (request.hasWebFacet() && !newTestInfrastructure) {
-			imports += String.format(generateImport('org.springframework.test.context.web.WebAppConfiguration',
-					request.language) + "%n")
-			testAnnotations = String.format('@WebAppConfiguration%n')
-		}
+
 		model.testImports = imports
 		model.testAnnotations = testAnnotations
 	}
@@ -322,17 +262,10 @@ class ProjectGenerator {
 		return 'maven'.equals(request.build)
 	}
 
-	private static boolean isNewTestInfrastructureAvailable(ProjectRequest request) {
-		VERSION_1_4_0_M2
-				.compareTo(Version.safeParse(request.bootVersion)) <= 0
-	}
 
-	private static boolean isNewServletInitializerAvailable(ProjectRequest request) {
-		VERSION_1_4_0_M3
-				.compareTo(Version.safeParse(request.bootVersion)) <= 0
-	}
 
 	private byte[] doGenerateMavenPom(Map model) {
+
 		groovyTemplate.process 'starter-pom.xml', model
 	}
 
@@ -341,48 +274,8 @@ class ProjectGenerator {
 		groovyTemplate.process 'starter-build.gradle', model
 	}
 
-	private void writeGradleWrapper(File dir) {
-		writeTextResource(dir, 'gradlew.bat', 'gradle/gradlew.bat')
-		writeTextResource(dir, 'gradlew', 'gradle/gradlew')
 
-		def wrapperDir = new File(dir, 'gradle/wrapper')
-		wrapperDir.mkdirs()
-		writeTextResource(wrapperDir, 'gradle-wrapper.properties',
-				'gradle/gradle/wrapper/gradle-wrapper.properties')
-		writeBinaryResource(wrapperDir, 'gradle-wrapper.jar',
-				'gradle/gradle/wrapper/gradle-wrapper.jar')
-	}
 
-	private void writeMavenWrapper(File dir) {
-		writeTextResource(dir, 'mvnw.cmd', 'maven/mvnw.cmd')
-		writeTextResource(dir, 'mvnw', 'maven/mvnw')
-
-		def wrapperDir = new File(dir, '.mvn/wrapper')
-		wrapperDir.mkdirs()
-		writeTextResource(wrapperDir, 'maven-wrapper.properties',
-				'maven/wrapper/maven-wrapper.properties')
-		writeBinaryResource(wrapperDir, 'maven-wrapper.jar',
-				'maven/wrapper/maven-wrapper.jar')
-	}
-
-	private File writeBinaryResource(File dir, String name, String location) {
-		doWriteProjectResource(dir, name, location, true)
-	}
-
-	private File writeTextResource(File dir, String name, String location) {
-		doWriteProjectResource(dir, name, location, false)
-	}
-
-	private File doWriteProjectResource(File dir, String name, String location, boolean binary) {
-		def target = new File(dir, name)
-		if (binary) {
-			target << projectResourceLocator.getBinaryResource("classpath:project/$location")
-		}
-		else {
-			target.write(projectResourceLocator.getTextResource("classpath:project/$location"))
-		}
-		target
-	}
 
 	private File initializerProjectDir(File rootDir, ProjectRequest request) {
 		if (request.baseDir) {

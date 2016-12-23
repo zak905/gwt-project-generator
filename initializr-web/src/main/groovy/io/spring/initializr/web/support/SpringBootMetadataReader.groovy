@@ -44,7 +44,7 @@ class SpringBootMetadataReader {
 	/**
 	 * Return the boot versions parsed by this instance.
 	 */
-	List<DefaultMetadataElement> getBootVersions() {
+	List<DefaultMetadataElement> getGwtVersions() {
 		content.projectReleases.collect {
 			def version = new DefaultMetadataElement()
 			version.id = it.version

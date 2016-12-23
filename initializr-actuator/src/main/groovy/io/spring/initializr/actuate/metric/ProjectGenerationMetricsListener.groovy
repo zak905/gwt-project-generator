@@ -60,7 +60,7 @@ class ProjectGenerationMetricsListener {
 		handleJavaVersion(request)
 		handlePackaging(request)
 		handleLanguage(request)
-		handleBootVersion(request)
+		handleGwtVersion(request)
 		handleUserAgent(request)
 	}
 
@@ -101,10 +101,10 @@ class ProjectGenerationMetricsListener {
 		}
 	}
 
-	protected void handleBootVersion(ProjectRequest request) {
-		if (StringUtils.hasText(request.bootVersion)) {
-			def bootVersion = sanitize(request.bootVersion)
-			increment(key("boot_version.$bootVersion"))
+	protected void handleGwtVersion(ProjectRequest request) {
+		if (StringUtils.hasText(request.gwtVersion)) {
+			def gwtVersion = sanitize(request.gwtVersion)
+			increment(key("boot_version.$gwtVersion"))
 		}
 	}
 

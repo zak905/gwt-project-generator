@@ -43,7 +43,6 @@ class PomAssert {
 
 	final XpathEngine eng
 	final Document doc
-	final ParentPom parentPom
 	final Map<String, String> properties = [:]
 	final Map<String, Dependency> dependencies = [:]
 	final Map<String, BillOfMaterials> boms = [:]
@@ -56,7 +55,6 @@ class PomAssert {
 		def namespaceContext = new SimpleNamespaceContext(context)
 		eng.namespaceContext = namespaceContext
 		doc = XMLUnit.buildControlDocument(content)
-		this.parentPom = parseParent()
 		parseProperties()
 		parseDependencies()
 		parseBoms()
@@ -148,12 +146,6 @@ class PomAssert {
 		hasDependency(new Dependency(groupId: groupId, artifactId: artifactId, version: version))
 	}
 
-	PomAssert hasParent(String groupId, String artifactId, String version) {
-		assertEquals groupId, this.parentPom.groupId
-		assertEquals artifactId, this.parentPom.artifactId
-		assertEquals version, this.parentPom.version
-		this
-	}
 
 	PomAssert hasSpringBootParent(String version) {
 		hasParent('org.springframework.boot', 'spring-boot-starter-parent', version)
@@ -241,12 +233,6 @@ class PomAssert {
 		"/pom:project/pom:$node"
 	}
 
-	private ParentPom parseParent() {
-		new ParentPom(
-				groupId: eng.evaluate(createRootNodeXPath('parent/pom:groupId'), doc),
-				artifactId: eng.evaluate(createRootNodeXPath('parent/pom:artifactId'), doc),
-				version: eng.evaluate(createRootNodeXPath('parent/pom:version'), doc))
-	}
 
 	private def parseProperties() {
 		def nodes = eng.getMatchingNodes(createRootNodeXPath('properties/*'), doc)

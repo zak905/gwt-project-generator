@@ -33,12 +33,13 @@ class BasicProjectRequest {
 	String groupId
 	String artifactId
 	String version
-	String bootVersion
+	String gwtVersion
 	String packaging
 	String applicationName
 	String language
 	String packageName
 	String javaVersion
+	String moduleName
 
 	// The base directory to create in the archive - no baseDir by default
 	String baseDir

@@ -45,7 +45,7 @@ class ProjectRequestDocumentFactoryTests extends AbstractInitializrStatTests {
 		assertEquals 'com.example', document.groupId
 		assertEquals 'demo', document.artifactId
 		assertEquals 'com.example', document.packageName
-		assertEquals '1.2.3.RELEASE', document.bootVersion
+		assertEquals '1.2.3.RELEASE', document.gwtVersion
 		assertEquals '1.8', document.javaVersion
 		assertEquals 'java', document.language
 		assertEquals 'jar', document.packaging

@@ -85,6 +85,19 @@ final class Version implements Serializable, Comparable<Version> {
 		version
 	}
 
+
+	static Version parseWithoutQualifier(String text) {
+		Assert.notNull(text, 'Text must not be null')
+		def matcher = (text.trim() =~ VERSION_REGEX)
+
+		Version version = new Version()
+		version.major = Integer.valueOf(matcher[0][1])
+		version.minor = Integer.valueOf(matcher[0][2])
+		version.patch = Integer.valueOf(matcher[0][3])
+
+		version
+	}
+
 	/**
 	 * Parse safely the specified string representation of a {@link Version}.
 	 * <p>

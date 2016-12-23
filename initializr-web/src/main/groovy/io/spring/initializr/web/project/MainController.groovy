@@ -135,14 +135,14 @@ class MainController extends AbstractInitializrController {
 	}
 
 	@RequestMapping(value = "/dependencies", produces = ["application/vnd.initializr.v2.1+json", "application/json"])
-	ResponseEntity<String> dependenciesV21(@RequestParam(required = false) String bootVersion) {
-		dependenciesFor(InitializrMetadataVersion.V2_1, bootVersion)
+	ResponseEntity<String> dependenciesV21(@RequestParam(required = false) String gwtVersion) {
+		dependenciesFor(InitializrMetadataVersion.V2_1, gwtVersion)
 	}
 
-	private ResponseEntity<String> dependenciesFor(InitializrMetadataVersion version, String bootVersion) {
+	private ResponseEntity<String> dependenciesFor(InitializrMetadataVersion version, String gwtVersion) {
 		def metadata = metadataProvider.get()
-		Version v = bootVersion != null ? Version.parse(bootVersion) :
-				Version.parse(metadata.bootVersions.getDefault().id);
+		Version v = gwtVersion != null ? Version.parseWithoutQualifier(gwtVersion) :
+				Version.parse(metadata.gwtVersions.getDefault().id);
 		def dependencyMetadata = dependencyMetadataProvider.get(metadata, v)
 		def content = new DependencyMetadataV21JsonMapper().write(dependencyMetadata)
 		return ResponseEntity.ok().contentType(version.mediaType).eTag(createUniqueId(content))
@@ -175,6 +175,7 @@ class MainController extends AbstractInitializrController {
 	@RequestMapping('/starter.zip')
 	@ResponseBody
 	ResponseEntity<byte[]> springZip(BasicProjectRequest basicRequest) {
+		log.info("module name received" + basicRequest.moduleName)
 		ProjectRequest request = (ProjectRequest) basicRequest
 		def dir = projectGenerator.generateProjectStructure(request)
 

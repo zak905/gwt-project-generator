@@ -53,7 +53,7 @@ class InitializrMetadata {
 
 	final TextCapability packageName = new PackageCapability(groupId)
 
-	final TextCapabiltity moduleName = new TextCapability('moduleName', 'module name', 'name of the GWT module');
+	final TextCapability moduleName = new TextCapability('moduleName', 'module name', 'name of the GWT module');
 
 	InitializrMetadata() {
 		this(new InitializrConfiguration())

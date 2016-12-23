@@ -145,8 +145,8 @@ $(function () {
     var removeTag = function (id) {
         $("#starters div[data-id='" + id + "']").remove();
     };
-    var initializeSearchEngine = function (engine, bootVersion) {
-        $.getJSON("/ui/dependencies.json?version=" + bootVersion, function (data) {
+    var initializeSearchEngine = function (engine, gwtVersion) {
+        $.getJSON("/ui/dependencies.json?version=" + gwtVersion, function (data) {
             engine.clear();
             $.each(data.dependencies, function(idx, item) {
                 if(item.weight === undefined) {
@@ -156,14 +156,14 @@ $(function () {
             engine.add(data.dependencies);
         });
     };
-    refreshDependencies($("#bootVersion").val());
+    refreshDependencies($("#gwtVersion").val());
     $("#type").on('change', function () {
         $("#form").attr('action', $(this.options[this.selectedIndex]).attr('data-action'))
     });
     $("#artifactId").on('change', function () {
         $("#baseDir").attr('value', this.value)
     });
-    $("#bootVersion").on("change", function (e) {
+    $("#gwtVersion").on("change", function (e) {
         refreshDependencies(this.value);
         initializeSearchEngine(starters, this.value);
     });
@@ -195,7 +195,7 @@ $(function () {
         limit: maxSuggestions,
         cache: false
     });
-    initializeSearchEngine(starters, $("#bootVersion").val());
+    initializeSearchEngine(starters, $("#gwtVersion").val());
     $('#autocomplete').typeahead(
         {
             minLength: 2,

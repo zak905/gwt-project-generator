@@ -170,10 +170,6 @@ class InitializrConfiguration {
 		 */
 		final Gradle gradle = new Gradle()
 
-		/**
-		 * Kotlin-specific settings.
-		 */
-		final Kotlin kotlin = new Kotlin()
 
 		/**
 		 * Maven-specific settings.
@@ -195,7 +191,6 @@ class InitializrConfiguration {
 		}
 
 		void validate() {
-			maven.parent.validate()
 			boms.each {
 				it.value.validate()
 			}
@@ -209,7 +204,6 @@ class InitializrConfiguration {
 			invalidApplicationNames = other.invalidApplicationNames
 			forceSsl = other.forceSsl
 			gradle.merge(other.gradle)
-			kotlin.version = other.kotlin.version
 			maven.merge(other.maven)
 			other.boms.each { id, bom ->
 				if (!boms[id]) {
@@ -236,70 +230,14 @@ class InitializrConfiguration {
 
 		}
 
-		static class Kotlin {
-
-			/**
-			 * Kotlin version to use.
-			 */
-			String version
-		}
 
 		static class Maven {
 
-			/**
-			 * Custom parent pom to use for generated projects.
-			 */
-			final ParentPom parent = new ParentPom()
 
 			private void merge(Maven other) {
-				parent.groupId = other.parent.groupId
-				parent.artifactId = other.parent.artifactId
-				parent.version = other.parent.version
-				parent.includeSpringBootBom = other.parent.includeSpringBootBom
-			}
-
-			/**
-			 * Resolve the parent pom to use. If no custom parent pom is set,
-			 * the standard spring boot parent pom with the specified {@code bootVersion}
-			 * is used.
-			 */
-			ParentPom resolveParentPom(String bootVersion) {
-				return parent.groupId ? parent :
-						new ParentPom(groupId: "org.springframework.boot",
-								artifactId: "spring-boot-starter-parent", version: bootVersion)
-			}
-
-			static class ParentPom {
-
-				/**
-				 * Parent pom groupId.
-				 */
-				String groupId
-
-				/**
-				 * Parent pom artifactId.
-				 */
-				String artifactId
-
-				/**
-				 * Parent pom version.
-				 */
-				String version
-
-				/**
-				 * Add the "spring-boot-dependencies" BOM to the project.
-				 */
-				boolean includeSpringBootBom
-
-				void validate() {
-					if (!((!groupId && !artifactId && !version) ||
-							(groupId && artifactId && version))) {
-						throw new InvalidInitializrMetadataException("Custom maven pom " +
-								"requires groupId, artifactId and version")
-					}
-				}
 
 			}
+
 
 		}
 

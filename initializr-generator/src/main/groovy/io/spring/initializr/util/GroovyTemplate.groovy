@@ -16,6 +16,8 @@
 
 package io.spring.initializr.util
 
+import groovy.util.logging.Slf4j
+
 import java.util.concurrent.ConcurrentMap
 
 import groovy.text.GStringTemplateEngine
@@ -29,6 +31,7 @@ import org.springframework.util.ConcurrentReferenceHashMap
  * @author Dave Syer
  * @since 1.0
  */
+@Slf4j
 class GroovyTemplate {
 
 	boolean cache = true
@@ -48,6 +51,7 @@ class GroovyTemplate {
 			throws IOException, CompilationFailedException, ClassNotFoundException {
 		def template = getTemplate(name)
 		def writable = template.make(model)
+		log.info("writable " + writable.toString())
 		def result = new StringWriter()
 		writable.writeTo(result)
 		result.toString()

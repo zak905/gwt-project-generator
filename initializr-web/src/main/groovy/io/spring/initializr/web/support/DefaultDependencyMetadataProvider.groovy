@@ -36,11 +36,11 @@ class DefaultDependencyMetadataProvider implements DependencyMetadataProvider {
 
 	@Override
 	@Cacheable(cacheNames = "dependency-metadata", key = "#p1")
-	DependencyMetadata get(InitializrMetadata metadata, Version bootVersion) {
+	DependencyMetadata get(InitializrMetadata metadata, Version gwtVersion) {
 		Map<String, Dependency> dependencies = [:]
 		for (Dependency d : metadata.dependencies.getAll()) {
-			if (d.match(bootVersion)) {
-				dependencies[d.id] = d.resolve(bootVersion)
+			if (d.match(gwtVersion)) {
+				dependencies[d.id] = d.resolve(gwtVersion)
 			}
 		}
 
@@ -54,7 +54,7 @@ class DefaultDependencyMetadataProvider implements DependencyMetadataProvider {
 		Map<String, BillOfMaterials> boms = [:]
 		for (Dependency d : dependencies.values()) {
 			if (d.bom) {
-				boms[d.bom] = metadata.configuration.env.boms.get(d.bom).resolve(bootVersion)
+				boms[d.bom] = metadata.configuration.env.boms.get(d.bom).resolve(gwtVersion)
 			}
 		}
 		// Each resolved bom may require additional repositories
@@ -64,7 +64,7 @@ class DefaultDependencyMetadataProvider implements DependencyMetadataProvider {
 			}
 		}
 
-		return new DependencyMetadata(bootVersion, dependencies, repositories, boms)
+		return new DependencyMetadata(gwtVersion, dependencies, repositories, boms)
 	}
 
 }

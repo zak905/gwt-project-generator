@@ -20,7 +20,7 @@ import java.util.concurrent.Executor
 
 import io.spring.initializr.metadata.InitializrMetadataProvider
 import io.spring.initializr.util.GroovyTemplate
-import io.spring.initializr.web.project.LegacyStsController
+
 
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication

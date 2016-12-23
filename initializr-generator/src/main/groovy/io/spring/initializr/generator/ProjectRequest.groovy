@@ -78,8 +78,8 @@ class ProjectRequest extends BasicProjectRequest {
 	 */
 	void resolve(InitializrMetadata metadata) {
 		List<String> depIds = style ? style : dependencies
-		String actualBootVersion = bootVersion ?: metadata.bootVersions.default.id
-		Version requestedVersion = Version.parse(actualBootVersion)
+		String actualGwtVersion = gwtVersion ?: metadata.gwtVersions.default.id
+		Version requestedVersion = Version.parse(actualGwtVersion)
 		resolvedDependencies = depIds.collect {
 			def dependency = metadata.dependencies.get(it)
 			if (dependency == null) {
@@ -97,7 +97,7 @@ class ProjectRequest extends BasicProjectRequest {
 				def range = VersionRange.parse(it.versionRange)
 				if (!range.match(requestedVersion)) {
 					throw new InvalidProjectRequestException("Dependency '$it.id' is not compatible " +
-							"with Spring Boot $bootVersion")
+							"with GWT $gwtVersion")
 				}
 			}
 			if (it.bom) {
@@ -146,10 +146,7 @@ class ProjectRequest extends BasicProjectRequest {
 	 * and the requested Spring Boot {@link Version}.
 	 */
 	protected void initializeRepositories(InitializrMetadata metadata, Version requestedVersion) {
-		if (!'RELEASE'.equals(requestedVersion.qualifier.qualifier)) {
-			repositories['spring-snapshots'] = metadata.configuration.env.repositories['spring-snapshots']
-			repositories['spring-milestones'] = metadata.configuration.env.repositories['spring-milestones']
-		}
+
 		boms.values().each {
 			it.repositories.each {
 				if (!repositories[it]) {
@@ -161,17 +158,11 @@ class ProjectRequest extends BasicProjectRequest {
 
 	protected void initializeProperties(InitializrMetadata metadata) {
 		if ('gradle'.equals(build)) {
-			buildProperties.gradle['springBootVersion'] = { getBootVersion() }
-			if ('kotlin'.equals(language)) {
-				buildProperties.gradle['kotlinVersion'] = { metadata.configuration.env.kotlin.version }
-			}
+			buildProperties.gradle['gwtVersion'] = { getGwtVersion() }
 		} else {
 			buildProperties.maven['project.build.sourceEncoding'] = { 'UTF-8' }
 			buildProperties.maven['project.reporting.outputEncoding'] = { 'UTF-8' }
 			buildProperties.versions['java.version'] = { getJavaVersion() }
-			if ('kotlin'.equals(language)) {
-				buildProperties.versions['kotlin.version'] = { metadata.configuration.env.kotlin.version }
-			}
 		}
 	}
 

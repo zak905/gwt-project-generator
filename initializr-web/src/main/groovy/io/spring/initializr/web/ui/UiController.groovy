@@ -48,11 +48,11 @@ class UiController {
 	ResponseEntity<String> dependencies(@RequestParam(required = false) String version) {
 		def dependencyGroups = metadataProvider.get().dependencies.content
 		def content = []
-		Version v = version ? Version.parse(version) : null
+		Version v = version ? Version.parseWithoutQualifier(version) : null
 		dependencyGroups.each { g ->
 			g.content.each { d ->
 				if (v && d.versionRange) {
-					if (VersionRange.parse(d.versionRange).match(v)) {
+					if (VersionRange.parseWithoutQualifier(d.versionRange).match(v)) {
 						content << new DependencyItem(g.name, d)
 					}
 				} else {

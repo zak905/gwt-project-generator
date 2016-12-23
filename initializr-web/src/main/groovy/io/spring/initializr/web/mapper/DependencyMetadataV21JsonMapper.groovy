@@ -34,7 +34,7 @@ class DependencyMetadataV21JsonMapper implements DependencyMetadataJsonMapper {
 	String write(DependencyMetadata metadata) {
 		JsonBuilder json = new JsonBuilder()
 		json {
-			bootVersion metadata.bootVersion.toString()
+			gwtVersion metadata.gwtVersion.toString()
 			dependencies metadata.dependencies.collectEntries { id, d ->
 				[id, mapDependency(d)]
 			}

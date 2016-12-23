@@ -54,14 +54,14 @@ class DefaultInitializrMetadataProviderTests {
 	void bootVersionsAreReplaced() {
 		def metadata = new InitializrMetadataTestBuilder()
 				.addBootVersion('0.0.9.RELEASE', true).addBootVersion('0.0.8.RELEASE', false).build()
-		assertEquals '0.0.9.RELEASE', metadata.bootVersions.default.id
+		assertEquals '0.0.9.RELEASE', metadata.getGwtVersions.default.id
 		def provider = new DefaultInitializrMetadataProvider(metadata, restTemplate)
 		expectJson(metadata.configuration.env.springBootMetadataUrl,
 				"metadata/sagan/spring-boot.json");
 
 		def updatedMetadata = provider.get()
-		assertNotNull updatedMetadata.bootVersions
-		def updatedBootVersions = updatedMetadata.bootVersions.content
+		assertNotNull updatedMetadata.getGwtVersions
+		def updatedBootVersions = updatedMetadata.getGwtVersions.content
 		assertEquals 4, updatedBootVersions.size()
 		assertBootVersion(updatedBootVersions[0], '1.4.1 (SNAPSHOT)', false)
 		assertBootVersion(updatedBootVersions[1], '1.4.0', true)
@@ -73,14 +73,14 @@ class DefaultInitializrMetadataProviderTests {
 	void defaultBootVersionIsAlwaysSet() {
 		def metadata = new InitializrMetadataTestBuilder()
 				.addBootVersion('0.0.9.RELEASE', true).addBootVersion('0.0.8.RELEASE', false).build()
-		assertEquals '0.0.9.RELEASE', metadata.bootVersions.default.id
+		assertEquals '0.0.9.RELEASE', metadata.getGwtVersions.default.id
 		def provider = new DefaultInitializrMetadataProvider(metadata, restTemplate)
 		expectJson(metadata.configuration.env.springBootMetadataUrl,
 				"metadata/sagan/spring-boot-no-default.json");
 
 		def updatedMetadata = provider.get()
-		assertNotNull updatedMetadata.bootVersions
-		def updatedBootVersions = updatedMetadata.bootVersions.content
+		assertNotNull updatedMetadata.getGwtVersions
+		def updatedBootVersions = updatedMetadata.getGwtVersions.content
 		assertEquals 4, updatedBootVersions.size()
 		assertBootVersion(updatedBootVersions[0], '1.3.1 (SNAPSHOT)', true)
 		assertBootVersion(updatedBootVersions[1], '1.3.0', false)
