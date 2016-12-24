@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Spring Initializr</title>
+    <title>GWT Project Generator</title>
     <link href="//fonts.googleapis.com/css?family=Varela+Round|Montserrat:400,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="${linkTo.call('/css/bootstrap.min.css')}"/>
     <link rel="stylesheet" href="${linkTo.call('/css/bootstrap-theme.min.css')}"/>
@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <div class="row start-header">
             <div class="container">
-                <h1>Spring Initializr <small>bootstrap your application now</small></h1>
+                <h1><img src="/initialzr/img/gwt.png" />GWT Project Generator<small>quickly bootstrap your GWT app</small></h1>
             </div>
         </div>
         <div class="container start-main">
@@ -83,7 +83,7 @@
                         <label for="packaging" class="control-label">${packagings.title}</label>
                         <select tabindex="8" class="form-control" id="packaging" name="packaging">
                             <% packagings.content.each { %>
-                            <option value="${it.id}" ${it.default==true ?
+                            <option value="${it.name}" ${it.default==true ?
                             ' selected' : ''}>${it.name}</option>
                             <% } %>
                         </select>

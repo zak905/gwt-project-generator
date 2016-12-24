@@ -191,22 +191,8 @@ class ProjectRequest extends BasicProjectRequest {
 			tomcat.scope = Dependency.SCOPE_PROVIDED
 			resolvedDependencies << tomcat
 		}
-		if (!resolvedDependencies.find { it.starter }) {
-			// There's no starter so we add the default one
-			addDefaultDependency()
-		}
 	}
 
-	/**
-	 * Add a default dependency if the project does not define any
-	 * dependency
-	 */
-	protected addDefaultDependency() {
-		def root = new Dependency()
-		root.id = DEFAULT_STARTER
-		root.asSpringBootStarter('')
-		resolvedDependencies << root
-	}
 
 	/**
 	 * Specify if this request has the web facet enabled.

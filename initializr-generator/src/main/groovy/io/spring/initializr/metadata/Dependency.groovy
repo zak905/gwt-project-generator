@@ -120,19 +120,6 @@ class Dependency extends MetadataElement {
 	}
 
 	/**
-	 * Define this dependency as a standard spring boot starter with the specified name
-	 * <p>If no name is specified, the root 'spring-boot-starter' is assumed.
-	 */
-	Dependency asSpringBootStarter(String name) {
-		groupId = 'org.springframework.boot'
-		artifactId = name ? 'spring-boot-starter-' + name : 'spring-boot-starter'
-		if (name) {
-			id = name
-		}
-		this
-	}
-
-	/**
 	 * Validate the dependency and complete its state based on the
 	 * available information.
 	 */
@@ -147,7 +134,7 @@ class Dependency extends MetadataElement {
 			// Let's build the coordinates from the id
 			def st = new StringTokenizer(id, ':')
 			if (st.countTokens() == 1) { // assume spring-boot-starter
-				asSpringBootStarter(id)
+				//no starter here
 			} else if (st.countTokens() == 2 || st.countTokens() == 3) {
 				groupId = st.nextToken()
 				artifactId = st.nextToken()

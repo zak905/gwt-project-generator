@@ -12,10 +12,10 @@ body, h1, h2, h3 {
 
 .start-header {
     color: #eee;
-    background-color: #34302d;
+    background-color: #94331d;
     font-size: 25px;
     padding: 0.5em 0;
-    border-top: 4px solid #6db33f;
+    border-top: 4px solid #d53125;
 }
 
 .start-header h1 {
@@ -158,7 +158,7 @@ footer {
     bottom: 0;
     width: 100%;
     height: 60px;
-    background-color: #5d5d5d;
+    background-color: #94331d;
     color: #eee;
     padding: 20px 0;
 }

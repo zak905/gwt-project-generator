@@ -16,6 +16,7 @@
 
 package io.spring.initializr.generator
 
+import groovy.transform.Synchronized
 import groovy.util.logging.Slf4j
 import io.spring.initializr.InitializrException
 import io.spring.initializr.metadata.Dependency
@@ -133,22 +134,27 @@ class ProjectGenerator {
 
 		generateGitIgnore(dir, request)
 
+        def src = new File(dir, "src");
+		src.mkdir();
 
+		def main = new File(src, "main");
+		main.mkdir()
 
-		def src = new File(new File(dir, "src/main/java"), request.packageName.replace('.', '/'))
-		src.mkdirs()
-		write(new File(src, "App.java"), "App.java", model)
+		def java = new File(new File(main, "java"), request.packageName.replace('.', '/'))
+		java.mkdirs()
+		write(new File(java, "App.java"), "EntryPoint.java", model)
 
-		def test = new File(new File(dir, "src/test/java"), request.packageName.replace('.', '/'))
+		def test = new File(new File(src, "test/java"), request.packageName.replace('.', '/'))
 		test.mkdirs()
 		setupTestModel(request, model)
-		write(new File(test, "AppTests.java"), "ApplicationTests.java", model)
+		write(new File(test, "AppTests.java"), "GwtTesttemplate.java", model)
 
-		def resources = new File(dir, 'src/main/resources')
-		resources.mkdirs()
+		def resources = new File(main, 'resources')
+		resources.mkdir()
 
-	/*	def rootSourceCode = new File(dir, "src/main")
-		write(rootSourceCode, "module.gwt.xml", model)*/
+
+		     write(new File(main, "module.gwt.xml"), "module.gwt.xml", model)
+
 
 		publishProjectGeneratedEvent(request)
 		rootDir
@@ -291,6 +297,8 @@ class ProjectGenerator {
 		def tmpl = templateName.endsWith('.groovy') ? templateName + '.tmpl' : templateName
 		def body = groovyTemplate.process tmpl, model
 		target.write(body, 'utf-8')
+
+
 	}
 
 	private void addTempFile(String group, File file) {

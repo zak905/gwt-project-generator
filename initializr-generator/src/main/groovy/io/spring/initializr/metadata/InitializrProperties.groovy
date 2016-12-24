@@ -98,7 +98,7 @@ class InitializrProperties extends InitializrConfiguration {
 
 
 	@JsonIgnore
-	final SimpleElement moduleName = new SimpleElement()
+	final SimpleElement moduleName = new SimpleElement(value: 'gwtmodule')
 
 
 	static class SimpleElement {
