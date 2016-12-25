@@ -89,60 +89,10 @@ class InitializrMetadata {
 	void validate() {
 		this.configuration.validate()
 		dependencies.validate()
-
-		def repositories = configuration.env.repositories
-		def boms = configuration.env.boms
-		for (Dependency dependency : dependencies.all) {
-			if (dependency.bom && !boms[dependency.bom]) {
-				throw new InvalidInitializrMetadataException("Dependency $dependency " +
-						"defines an invalid BOM id $dependency.bom, available boms $boms")
-			}
-
-			if (dependency.repository && !repositories[dependency.repository]) {
-				throw new InvalidInitializrMetadataException("Dependency $dependency " +
-						"defines an invalid repository id $dependency.repository, available repositores $repositories")
-			}
-		}
-		for (BillOfMaterials bom : boms.values()) {
-			for (String r : bom.repositories) {
-				if (!repositories[r]) {
-					throw new InvalidInitializrMetadataException("$bom " +
-							"defines an invalid repository id $r, available repositores $repositories")
-				}
-			}
-			for (String b : bom.additionalBoms) {
-				if (!boms[b]) {
-					throw new InvalidInitializrMetadataException("$bom defines an invalid " +
-							"additional bom id $b, available boms $boms")
-				}
-			}
-			for (BillOfMaterials.Mapping m : bom.mappings) {
-				for (String r : m.repositories) {
-					if (!repositories[r]) {
-						throw new InvalidInitializrMetadataException("$m of $bom " +
-								"defines an invalid repository id $r, available repositores $repositories")
-					}
-
-				}
-				for (String b : m.additionalBoms) {
-					if (!boms[b]) {
-						throw new InvalidInitializrMetadataException("$m of $bom defines " +
-								"an invalid additional bom id $b, available boms $boms")
-					}
-				}
-			}
-		}
-
 	}
 
 
-	/**
-	 * Create a {@link BillOfMaterials} for the spring boot BOM.
-	 */
-	BillOfMaterials createSpringBootBom(String gwtVersion, String versionProperty) {
-		new BillOfMaterials(groupId: 'org.springframework.boot', artifactId: 'spring-boot-dependencies',
-				version: gwtVersion, versionProperty: versionProperty)
-	}
+
 
 	/**
 	 * Return the defaults for the capabilities defined on this instance.

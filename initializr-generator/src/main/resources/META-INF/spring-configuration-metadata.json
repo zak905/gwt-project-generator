@@ -131,12 +131,6 @@
       "defaultValue": "https://repo.spring.io/release/"
     },
     {
-      "name": "initializr.env.boms",
-      "type": "java.util.Map<java.lang.String,io.spring.initializr.metadata.BillOfMaterials>",
-      "description": "The \"BillOfMaterials\" that are referenced in this instance, identified by an\n arbitrary identifier that can be used in the dependencies definition.",
-      "sourceType": "io.spring.initializr.metadata.InitializrConfiguration$Env"
-    },
-    {
       "name": "initializr.env.fallback-application-name",
       "type": "java.lang.String",
       "description": "The application name to use if none could be generated.",

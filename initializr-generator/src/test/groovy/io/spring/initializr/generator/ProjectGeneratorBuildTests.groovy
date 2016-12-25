@@ -16,7 +16,7 @@
 
 package io.spring.initializr.generator
 
-import io.spring.initializr.metadata.BillOfMaterials
+
 import io.spring.initializr.metadata.Dependency
 import io.spring.initializr.test.metadata.InitializrMetadataTestBuilder
 import org.junit.Test
@@ -108,20 +108,7 @@ class ProjectGeneratorBuildTests extends AbstractProjectGeneratorTests {
 				.equalsTo(new ClassPathResource("project/$build/version-override-$assertFileName"))
 	}
 
-	@Test
-	void bomWithVersionProperty() {
-		def foo = new Dependency(id: 'foo', groupId: 'org.acme', artifactId: 'foo', bom: 'the-bom')
-		def bom = new BillOfMaterials(groupId: 'org.acme', artifactId: 'foo-bom',
-				version: '1.3.3', versionProperty: 'foo.version')
-		def metadata = InitializrMetadataTestBuilder.withDefaults()
-				.addDependencyGroup('foo', foo)
-				.addBom('the-bom', bom).build()
-		applyMetadata(metadata)
-		def request = createProjectRequest('foo')
-		def project = generateProject(request)
-		project.sourceCodeAssert("$fileName")
-				.equalsTo(new ClassPathResource("project/$build/bom-property-$assertFileName"))
-	}
+
 
 	@Test
 	void compileOnlyDependency() {

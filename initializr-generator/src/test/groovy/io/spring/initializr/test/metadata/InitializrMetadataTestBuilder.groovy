@@ -16,13 +16,11 @@
 
 package io.spring.initializr.test.metadata
 
-import io.spring.initializr.metadata.BillOfMaterials
 import io.spring.initializr.metadata.DefaultMetadataElement
 import io.spring.initializr.metadata.Dependency
 import io.spring.initializr.metadata.DependencyGroup
 import io.spring.initializr.metadata.InitializrMetadata
 import io.spring.initializr.metadata.InitializrMetadataBuilder
-import io.spring.initializr.metadata.Repository
 import io.spring.initializr.metadata.Type
 
 /**
@@ -132,16 +130,8 @@ class InitializrMetadataTestBuilder {
 		this
 	}
 
-	InitializrMetadataTestBuilder addBom(String id, String groupId, String artifactId, String version) {
-		addBom(id, new BillOfMaterials(groupId: groupId, artifactId: artifactId, version: version))
-	}
 
-	InitializrMetadataTestBuilder addBom(String id, BillOfMaterials bom) {
-		builder.withCustomizer {
-			it.configuration.env.boms[id] = bom
-		}
-		this
-	}
+
 
 	InitializrMetadataTestBuilder setGradleEnv(String dependencyManagementPluginVersion) {
 		builder.withCustomizer {
@@ -169,13 +159,6 @@ class InitializrMetadataTestBuilder {
 		this
 	}
 
-	InitializrMetadataTestBuilder addRepository(String id, String name, String url, boolean snapshotsEnabled) {
-		builder.withCustomizer {
-			Repository repo = new Repository(
-					name: name, url: new URL(url), snapshotsEnabled: snapshotsEnabled)
-			it.configuration.env.repositories[id] = repo
-		}
-		this
-	}
+
 
 }

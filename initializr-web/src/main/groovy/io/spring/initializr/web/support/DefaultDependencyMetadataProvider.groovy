@@ -16,12 +16,10 @@
 
 package io.spring.initializr.web.support
 
-import io.spring.initializr.metadata.BillOfMaterials
 import io.spring.initializr.metadata.Dependency
 import io.spring.initializr.metadata.DependencyMetadata
 import io.spring.initializr.metadata.DependencyMetadataProvider
 import io.spring.initializr.metadata.InitializrMetadata
-import io.spring.initializr.metadata.Repository
 import io.spring.initializr.util.Version
 
 import org.springframework.cache.annotation.Cacheable
@@ -44,27 +42,10 @@ class DefaultDependencyMetadataProvider implements DependencyMetadataProvider {
 			}
 		}
 
-		Map<String, Repository> repositories = [:]
-		for (Dependency d : dependencies.values()) {
-			if (d.repository) {
-				repositories[d.repository] = metadata.configuration.env.repositories[d.repository]
-			}
-		}
 
-		Map<String, BillOfMaterials> boms = [:]
-		for (Dependency d : dependencies.values()) {
-			if (d.bom) {
-				boms[d.bom] = metadata.configuration.env.boms.get(d.bom).resolve(gwtVersion)
-			}
-		}
-		// Each resolved bom may require additional repositories
-		for (BillOfMaterials b : boms.values()) {
-			for (String id : b.repositories) {
-				repositories[id] = metadata.configuration.env.repositories[id]
-			}
-		}
 
-		return new DependencyMetadata(gwtVersion, dependencies, repositories, boms)
+
+		return new DependencyMetadata(gwtVersion, dependencies)
 	}
 
 }

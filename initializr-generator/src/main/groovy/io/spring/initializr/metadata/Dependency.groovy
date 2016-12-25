@@ -85,18 +85,17 @@ class Dependency extends MetadataElement {
 	@JsonIgnore
 	String versionRequirement
 
-	String bom
-
-	String repository
 
 	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 	int weight
 
 	/**
-	 * Specify if the dependency represents a "starter", i.e. the sole presence of
-	 * that dependency is enough to bootstrap the context.
+	 * the dependecy that needs to be inherited in module.gwt.xml
+	 *
 	 */
-	boolean starter = true
+	@JsonIgnore
+	String dependencyModule
+
 
 	List<String> keywords = []
 

@@ -147,10 +147,6 @@ class InitializrConfigurationTests {
 		assertEquals 'com.example', this.properties.cleanPackageName('org.springframework', 'com.example')
 	}
 
-	@Test
-	void validateArtifactRepository() {
-		this.properties.env.artifactRepository = 'http://foo/bar'
-		assertEquals 'http://foo/bar/', this.properties.env.artifactRepository
-	}
+
 
 }

@@ -37,6 +37,7 @@ import static io.spring.initializr.metadata.InitializrConfiguration.Env.Maven.Pa
  * @author Dave Syer
  * @author Stephane Nicoll
  * @author Sebastien Deleuze
+ * @author Zakaria Amine
  * @since 1.0
  */
 @Slf4j
@@ -152,8 +153,14 @@ class ProjectGenerator {
 		def resources = new File(main, 'resources')
 		resources.mkdir()
 
+		write(new File(main, "module.gwt.xml"), "module.gwt.xml", model)
 
-		     write(new File(main, "module.gwt.xml"), "module.gwt.xml", model)
+		def webapp = new File(main, "webapp")
+		webapp.mkdir()
+
+		String moduleName = request.moduleName
+		write(new File(main, moduleName+".html"), "template.html", model)
+		write(new File(main, moduleName+".css"), "template.css", model)
 
 
 		publishProjectGeneratedEvent(request)
@@ -235,11 +242,7 @@ class ProjectGenerator {
 		model['providedDependencies'] = filterDependencies(dependencies, Dependency.SCOPE_PROVIDED)
 		model['testDependencies'] = filterDependencies(dependencies, Dependency.SCOPE_TEST)
 
-		request.boms.each { k, v ->
-			if (v.versionProperty) {
-				request.buildProperties.versions[v.versionProperty] = { v.version }
-			}
-		}
+
 
 		// Append the project request to the model
 		request.properties.each { model[it.key] = it.value }
@@ -272,12 +275,12 @@ class ProjectGenerator {
 
 	private byte[] doGenerateMavenPom(Map model) {
 
-		groovyTemplate.process 'starter-pom.xml', model
+		groovyTemplate.process 'pom.xml', model
 	}
 
 
 	private byte[] doGenerateGradleBuild(Map model) {
-		groovyTemplate.process 'starter-build.gradle', model
+		groovyTemplate.process 'build.gradle'
 	}
 
 
@@ -297,8 +300,6 @@ class ProjectGenerator {
 		def tmpl = templateName.endsWith('.groovy') ? templateName + '.tmpl' : templateName
 		def body = groovyTemplate.process tmpl, model
 		target.write(body, 'utf-8')
-
-
 	}
 
 	private void addTempFile(String group, File file) {

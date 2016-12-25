@@ -126,13 +126,16 @@ class InitializrMetadataBuilder {
 			metadata.name.content = 'demo'
 		}
 		if (!metadata.description.content) {
-			metadata.description.content = 'Demo project for Spring Boot'
+			metadata.description.content = 'GWT project'
 		}
 		if (!metadata.groupId.content) {
 			metadata.groupId.content = 'com.example'
 		}
 		if (!metadata.version.content) {
 			metadata.version.content = '0.0.1-SNAPSHOT'
+		}
+		if(!metadata.moduleName.content){
+			metadata.moduleName.content = 'gwtmodulename'
 		}
 	}
 

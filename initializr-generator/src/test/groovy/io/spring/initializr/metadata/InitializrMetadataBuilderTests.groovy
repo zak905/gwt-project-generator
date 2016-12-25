@@ -84,45 +84,7 @@ class InitializrMetadataBuilderTests {
 		assertEquals 'org.acme.demo', metadata.packageName.content
 	}
 
-	@Test
-	void mergeMetadataWithBom() {
-		def metadata = InitializrMetadataBuilder.create().withInitializrMetadata(
-				new ClassPathResource('metadata/config/test-bom.json')).build()
 
-		def boms = metadata.configuration.env.boms
-		assertEquals 2, boms.size()
-		BillOfMaterials myBom = boms['my-bom']
-		assertNotNull myBom
-		assertEquals 'org.acme', myBom.groupId
-		assertEquals 'my-bom', myBom.artifactId
-		assertEquals '1.2.3.RELEASE', myBom.version
-
-		BillOfMaterials anotherBom = boms['another-bom']
-		assertNotNull anotherBom
-		assertEquals 'org.acme', anotherBom.groupId
-		assertEquals 'another-bom', anotherBom.artifactId
-		assertEquals '4.5.6.RELEASE', anotherBom.version
-	}
-
-	@Test
-	void mergeMetadataWithRepository() {
-		def metadata = InitializrMetadataBuilder.create().withInitializrMetadata(
-				new ClassPathResource('metadata/config/test-repository.json')).build()
-
-		def repositories = metadata.configuration.env.repositories
-		assertEquals 4, repositories.size() // 2 standard repos
-		Repository myRepo = repositories['my-repo']
-		assertNotNull myRepo
-		assertEquals 'my repo', myRepo.name
-		assertEquals new URL('http://example.com/my'), myRepo.url
-		assertEquals true, myRepo.snapshotsEnabled
-
-		Repository anotherRepo = repositories['another-repo']
-		assertNotNull anotherRepo
-		assertEquals 'another repo', anotherRepo.name
-		assertEquals new URL('http://example.com/another'), anotherRepo.url
-		assertEquals false, anotherRepo.snapshotsEnabled
-	}
 
 	@Test
 	void mergeConfigurationDisabledByDefault() {

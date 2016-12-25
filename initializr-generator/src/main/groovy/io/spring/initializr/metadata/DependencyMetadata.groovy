@@ -30,16 +30,10 @@ class DependencyMetadata {
 
 	final Map<String, Dependency> dependencies
 
-	final Map<String, Repository> repositories
 
-	final Map<String, BillOfMaterials> boms
-
-	DependencyMetadata(Version gwtVersion, Map<String, Dependency> dependencies,
-					   Map<String, Repository> repositories, Map<String, BillOfMaterials> boms) {
+	DependencyMetadata(Version gwtVersion, Map<String, Dependency> dependencies) {
 		this.gwtVersion = gwtVersion
 		this.dependencies = dependencies
-		this.repositories = repositories
-		this.boms = boms
 	}
 
 }

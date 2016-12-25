@@ -17,10 +17,9 @@
 package io.spring.initializr.web.mapper
 
 import groovy.json.JsonBuilder
-import io.spring.initializr.metadata.BillOfMaterials
 import io.spring.initializr.metadata.Dependency
 import io.spring.initializr.metadata.DependencyMetadata
-import io.spring.initializr.metadata.Repository
+
 
 /**
  * A {@link DependencyMetadataJsonMapper} handling the metadata format for v2.1.
@@ -38,8 +37,6 @@ class DependencyMetadataV21JsonMapper implements DependencyMetadataJsonMapper {
 			dependencies metadata.dependencies.collectEntries { id, d ->
 				[id, mapDependency(d)]
 			}
-			repositories metadata.repositories.collectEntries { id, r -> [id, mapRepository(r)] }
-			boms metadata.boms.collectEntries { id, b -> [id, mapBom(b)] }
 		}
 		json.toString()
 	}
@@ -52,34 +49,9 @@ class DependencyMetadataV21JsonMapper implements DependencyMetadataJsonMapper {
 			result.version = dep.version
 		}
 		result.scope = dep.scope
-		if (dep.bom) {
-			result.bom = dep.bom
-		}
-		if (dep.repository) {
-			result.repository = dep.repository
-		}
+
 		result
 	}
 
-	private static mapRepository(Repository repo) {
-		def result = [:]
-		result.name = repo.name
-		result.url = repo.url
-		result.snapshotEnabled = repo.snapshotsEnabled
-		result
-	}
-
-	private static mapBom(BillOfMaterials bom) {
-		def result = [:]
-		result.groupId = bom.groupId
-		result.artifactId = bom.artifactId
-		if (bom.version) {
-			result.version = bom.version
-		}
-		if (bom.repositories)  {
-			result.repositories = bom.repositories
-		}
-		result
-	}
 
 }

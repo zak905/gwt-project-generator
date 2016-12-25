@@ -16,7 +16,6 @@
 
 package io.spring.initializr.generator
 
-import io.spring.initializr.metadata.BillOfMaterials
 import io.spring.initializr.metadata.Dependency
 import io.spring.initializr.metadata.InitializrMetadata
 import io.spring.initializr.test.metadata.InitializrMetadataTestBuilder
@@ -74,14 +73,7 @@ class ProjectGeneratorTests extends AbstractProjectGeneratorTests {
 				.hasSpringBootStarterRootDependency()
 	}
 
-	@Test
-	void mavenPomWithBootSnapshot() {
-		def request = createProjectRequest('web')
-		request.bootVersion = '1.0.1.BUILD-SNAPSHOT'
-		generateMavenPom(request).hasSnapshotRepository()
-				.hasSpringBootParent('1.0.1.BUILD-SNAPSHOT')
-				.hasSpringBootStarterDependency('web')
-	}
+
 
 	@Test
 	void mavenPomWithTarDependency() {
@@ -323,48 +315,10 @@ class ProjectGeneratorTests extends AbstractProjectGeneratorTests {
 		generateMavenPom(request).hasSpringBootParent(request.bootVersion)
 	}
 
-	@Test
-	void mavenPomWithCustomParentPom() {
-		def metadata = InitializrMetadataTestBuilder.withDefaults()
-				.addDependencyGroup('core', 'web', 'security', 'data-jpa')
-				.setMavenParent('com.foo', 'foo-parent', '1.0.0-SNAPSHOT', false)
-				.build()
-		applyMetadata(metadata)
-		def request = createProjectRequest('web')
-		generateMavenPom(request)
-				.hasParent('com.foo', 'foo-parent', '1.0.0-SNAPSHOT')
-				.hasBomsCount(0)
-	}
 
-	@Test
-	void mavenPomWithCustomParentPomAndSpringBootBom() {
-		def metadata = InitializrMetadataTestBuilder.withDefaults()
-				.addDependencyGroup('core', 'web', 'security', 'data-jpa')
-				.setMavenParent('com.foo', 'foo-parent', '1.0.0-SNAPSHOT', true)
-				.build()
-		applyMetadata(metadata)
-		def request = createProjectRequest('web')
-		request.bootVersion = '1.0.2.RELEASE'
-		generateMavenPom(request)
-				.hasParent('com.foo', 'foo-parent', '1.0.0-SNAPSHOT')
-				.hasProperty('spring-boot.version', '1.0.2.RELEASE')
-				.hasBom('org.springframework.boot', 'spring-boot-dependencies', '${spring-boot.version}')
-				.hasBomsCount(1)
-	}
 
-	@Test
-	void gradleBuildWithCustomParentPomAndSpringBootBom() {
-		def metadata = InitializrMetadataTestBuilder.withDefaults()
-				.addDependencyGroup('core', 'web', 'security', 'data-jpa')
-				.setMavenParent('com.foo', 'foo-parent', '1.0.0-SNAPSHOT', true)
-				.build()
-		applyMetadata(metadata)
-		def request = createProjectRequest('web')
-		request.bootVersion = '1.0.2.RELEASE'
-		generateGradleBuild(request)
-				.doesNotContain("ext['spring-boot.version'] = '1.0.2.RELEASE'")
-				.doesNotContain("mavenBom \"org.springframework.boot:spring-boot-dependencies:1.0.2.RELEASE\"")
-	}
+
+
 
 	@Test
 	void gradleBuildWithBootSnapshot() {
@@ -470,133 +424,7 @@ class ProjectGeneratorTests extends AbstractProjectGeneratorTests {
 				.doesNotContain("apply plugin: 'spring-boot'")
 	}
 
-	@Test
-	void mavenBom() {
-		def foo = new Dependency(id: 'foo', groupId: 'org.acme', artifactId: 'foo', bom: 'foo-bom')
-		def metadata = InitializrMetadataTestBuilder.withDefaults()
-				.addDependencyGroup('foo', foo)
-				.addBom('foo-bom', 'org.acme', 'foo-bom', '1.2.3').build()
-		applyMetadata(metadata)
-		def request = createProjectRequest('foo')
-		generateMavenPom(request).hasDependency(foo)
-				.hasBom('org.acme', 'foo-bom', '1.2.3')
-	}
 
-	@Test
-	void mavenBomWithSeveralDependenciesOnSameBom() {
-		def foo = new Dependency(id: 'foo', groupId: 'org.acme', artifactId: 'foo', bom: 'the-bom')
-		def bar = new Dependency(id: 'bar', groupId: 'org.acme', artifactId: 'bar', bom: 'the-bom')
-		def metadata = InitializrMetadataTestBuilder.withDefaults()
-				.addDependencyGroup('group', foo, bar)
-				.addBom('the-bom', 'org.acme', 'the-bom', '1.2.3').build()
-		applyMetadata(metadata)
-		def request = createProjectRequest('foo', 'bar')
-		generateMavenPom(request).hasDependency(foo)
-				.hasBom('org.acme', 'the-bom', '1.2.3')
-				.hasBomsCount(1)
-	}
-
-	@Test
-	void mavenBomWithVersionMapping() {
-		def foo = new Dependency(id: 'foo', groupId: 'org.acme', artifactId: 'foo', bom: 'the-bom')
-		def bom = new BillOfMaterials(groupId: 'org.acme', artifactId: 'foo-bom')
-		bom.mappings << new BillOfMaterials.Mapping(versionRange: '[1.2.0.RELEASE,1.3.0.M1)', version: '1.0.0')
-		bom.mappings << new BillOfMaterials.Mapping(versionRange: '1.3.0.M1', version: '1.2.0')
-		def metadata = InitializrMetadataTestBuilder.withDefaults()
-				.addDependencyGroup('foo', foo)
-				.addBom('the-bom', bom).build()
-		applyMetadata(metadata)
-
-		// First version
-		def request = createProjectRequest('foo')
-		request.bootVersion = '1.2.5.RELEASE'
-		generateMavenPom(request).hasDependency(foo)
-				.hasSpringBootParent('1.2.5.RELEASE')
-				.hasBom('org.acme', 'foo-bom', '1.0.0')
-
-		// Second version
-		def request2 = createProjectRequest('foo')
-		request2.bootVersion = '1.3.0.M1'
-		generateMavenPom(request2).hasDependency(foo)
-				.hasSpringBootParent('1.3.0.M1')
-				.hasBom('org.acme', 'foo-bom', '1.2.0')
-	}
-
-	@Test
-	void mavenBomWithVersionMappingAndExtraRepositories() {
-		def foo = new Dependency(id: 'foo', groupId: 'org.acme', artifactId: 'foo', bom: 'the-bom')
-		def bom = new BillOfMaterials(groupId: 'org.acme', artifactId: 'foo-bom', repositories: ['foo-repo'])
-		bom.mappings << new BillOfMaterials.Mapping(versionRange: '[1.2.0.RELEASE,1.3.0.M1)', version: '1.0.0')
-		bom.mappings << new BillOfMaterials.Mapping(versionRange: '1.3.0.M1', version: '1.2.0', repositories: ['foo-repo', 'bar-repo'])
-		def metadata = InitializrMetadataTestBuilder.withDefaults()
-				.addDependencyGroup('foo', foo)
-				.addBom('the-bom', bom)
-				.addRepository('foo-repo', 'repo', 'http://example.com/foo', true)
-				.addRepository('bar-repo', 'repo', 'http://example.com/bar', false).build()
-		applyMetadata(metadata)
-
-		// Second version
-		def request = createProjectRequest('foo')
-		request.bootVersion = '1.3.0.RELEASE'
-		generateMavenPom(request).hasDependency(foo)
-				.hasSpringBootParent('1.3.0.RELEASE')
-				.hasBom('org.acme', 'foo-bom', '1.2.0')
-				.hasRepository('foo-repo', 'repo', 'http://example.com/foo', true)
-				.hasRepository('bar-repo', 'repo', 'http://example.com/bar', false)
-				.hasRepositoriesCount(2)
-	}
-
-	@Test
-	void gradleBom() {
-		def foo = new Dependency(id: 'foo', groupId: 'org.acme', artifactId: 'foo', bom: 'foo-bom')
-		def metadata = InitializrMetadataTestBuilder.withDefaults()
-				.addDependencyGroup('foo', foo)
-				.addBom('foo-bom', 'org.acme', 'foo-bom', '1.2.3').build()
-		applyMetadata(metadata)
-		def request = createProjectRequest('foo')
-		generateGradleBuild(request)
-				.contains("dependencyManagement {")
-				.contains("imports {")
-				.contains("mavenBom \"org.acme:foo-bom:1.2.3\"")
-	}
-
-	@Test
-	void mavenRepository() {
-		def foo = new Dependency(id: 'foo', groupId: 'org.acme', artifactId: 'foo', repository: 'foo-repo')
-		def metadata = InitializrMetadataTestBuilder.withDefaults()
-				.addDependencyGroup('foo', foo)
-				.addRepository('foo-repo', 'foo', 'http://example.com/repo', false).build()
-		applyMetadata(metadata)
-		def request = createProjectRequest('foo')
-		generateMavenPom(request).hasDependency(foo)
-				.hasRepository('foo-repo', 'foo', 'http://example.com/repo', false)
-	}
-
-	@Test
-	void mavenRepositoryWithSeveralDependenciesOnSameRepository() {
-		def foo = new Dependency(id: 'foo', groupId: 'org.acme', artifactId: 'foo', repository: 'the-repo')
-		def bar = new Dependency(id: 'bar', groupId: 'org.acme', artifactId: 'bar', repository: 'the-repo')
-		def metadata = InitializrMetadataTestBuilder.withDefaults()
-				.addDependencyGroup('group', foo, bar)
-				.addRepository('the-repo', 'repo', 'http://example.com/repo', true).build()
-		applyMetadata(metadata)
-		def request = createProjectRequest('foo', 'bar')
-		generateMavenPom(request).hasDependency(foo)
-				.hasRepository('the-repo', 'repo', 'http://example.com/repo', true)
-				.hasRepositoriesCount(1)
-	}
-
-	@Test
-	void gradleRepository() {
-		def foo = new Dependency(id: 'foo', groupId: 'org.acme', artifactId: 'foo', repository: 'foo-repo')
-		def metadata = InitializrMetadataTestBuilder.withDefaults()
-				.addDependencyGroup('foo', foo)
-				.addRepository('foo-repo', 'foo', 'http://example.com/repo', false).build()
-		applyMetadata(metadata)
-		def request = createProjectRequest('foo')
-		generateGradleBuild(request)
-				.hasRepository('http://example.com/repo')
-	}
 
 	@Test
 	void projectWithOnlyStarterDependency() {

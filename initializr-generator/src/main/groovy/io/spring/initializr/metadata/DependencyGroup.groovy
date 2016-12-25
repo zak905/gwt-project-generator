@@ -25,7 +25,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore
  * @since 1.0
  */
 class DependencyGroup {
-
 	/**
 	 * Name of this group.
 	 */
@@ -38,20 +37,6 @@ class DependencyGroup {
 	@JsonIgnore
 	String versionRange
 
-	/**
-	 * The default bom to associate to all dependencies of this group unless
-	 * specified otherwise.
-	 */
-	@JsonIgnore
-	String bom
-
-	/**
-	 * The default repository to associate to all dependencies of this group unless
-	 * specified otherwise.
-	 */
-	@JsonIgnore
-	String repository
 
 	final List<Dependency> content = []
-
 }

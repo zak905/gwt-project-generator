@@ -33,23 +33,23 @@ initializr:
           groupId: com.vaadin.polymer
           description: Ready to use Polymer elements GWT projects
           version: 1.7.0.0
-          starter: false
+          dependencyModule: com.vaadin.polymer.Elements
         - name: gwt-material
           id: gwtmaterial
-          artifactId: vaadin-gwt-polymer-elements
+          artifactId: gwt-material
           scope: provided
           groupId: com.github.gwtmaterialdesign
-          description: gwt-material
+          description: a Material Design wrapper for GWT
           version: 1.6
-          starter: false
+          dependencyModule: gwt.material.design.GwtMaterialDesignBasic
         - name: gwtbootstrap3
           id: gwtbootstrap
-          description: a Material Design wrapper for GWT
+          description: A GWT wrapper for Bootstrap
           version: 0.9.3
-          artifactId: vaadin-gwt-polymer-elements
+          artifactId: gwtbootstrap3
           scope: provided
-          groupId: com.github.gwtmaterialdesign
-          starter: false
+          groupId: org.gwtbootstrap3
+          dependencyModule: org.gwtbootstrap3.GwtBootstrap3
     - name: Rest/HTTP
       content:
         - name: Web

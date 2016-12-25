@@ -18,10 +18,8 @@ package io.spring.initializr.generator
 
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
-import io.spring.initializr.metadata.BillOfMaterials
 import io.spring.initializr.metadata.Dependency
 import io.spring.initializr.metadata.InitializrMetadata
-import io.spring.initializr.metadata.Repository
 import io.spring.initializr.metadata.Type
 import io.spring.initializr.util.Version
 import io.spring.initializr.util.VersionRange
@@ -31,6 +29,7 @@ import io.spring.initializr.util.VersionRange
  *
  * @author Dave Syer
  * @author Stephane Nicoll
+ * @author Zakaria Amine
  * @since 1.0
  */
 @Slf4j
@@ -49,10 +48,6 @@ class ProjectRequest extends BasicProjectRequest {
 
 	// Resolved dependencies based on the ids provided by either "style" or "dependencies"
 	List<Dependency> resolvedDependencies
-
-	final Map<String, BillOfMaterials> boms = [:]
-
-	final Map<String, Repository> repositories = [:]
 
 	/**
 	 * Build properties.
@@ -100,15 +95,7 @@ class ProjectRequest extends BasicProjectRequest {
 							"with GWT $gwtVersion")
 				}
 			}
-			if (it.bom) {
-				resolveBom(metadata, it.bom, requestedVersion)
-			}
-			if (it.repository) {
-				String repositoryId = it.repository
-				if (!repositories[repositoryId]) {
-					repositories[repositoryId] = metadata.configuration.env.repositories[repositoryId]
-				}
-			}
+
 		}
 
 		if (this.type) {
@@ -134,27 +121,12 @@ class ProjectRequest extends BasicProjectRequest {
 		}
 		packageName = metadata.configuration.cleanPackageName(this.packageName, metadata.packageName.content)
 
-		initializeRepositories(metadata, requestedVersion)
 
 		initializeProperties(metadata)
 
 		afterResolution(metadata)
 	}
 
-	/**
-	 * Set the repositories that this instance should use based on the {@link InitializrMetadata}
-	 * and the requested Spring Boot {@link Version}.
-	 */
-	protected void initializeRepositories(InitializrMetadata metadata, Version requestedVersion) {
-
-		boms.values().each {
-			it.repositories.each {
-				if (!repositories[it]) {
-					repositories[it] = metadata.configuration.env.repositories[it]
-				}
-			}
-		}
-	}
 
 	protected void initializeProperties(InitializrMetadata metadata) {
 		if ('gradle'.equals(build)) {
@@ -166,15 +138,6 @@ class ProjectRequest extends BasicProjectRequest {
 		}
 	}
 
-	private void resolveBom(InitializrMetadata metadata, String bomId, Version requestedVersion) {
-		if (!boms[bomId]) {
-			def bom = metadata.configuration.env.boms[bomId].resolve(requestedVersion)
-			boms[bomId] = bom
-			bom.additionalBoms.each { id ->
-				resolveBom(metadata, id, requestedVersion)
-			}
-		}
-	}
 
 	/**
 	 * Update this request once it has been resolved with the specified {@link InitializrMetadata}.

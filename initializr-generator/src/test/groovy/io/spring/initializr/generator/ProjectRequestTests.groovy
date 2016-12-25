@@ -16,7 +16,6 @@
 
 package io.spring.initializr.generator
 
-import io.spring.initializr.metadata.BillOfMaterials
 import io.spring.initializr.metadata.Dependency
 import io.spring.initializr.metadata.InitializrMetadataBuilder
 import io.spring.initializr.test.metadata.InitializrMetadataTestBuilder
@@ -261,99 +260,12 @@ class ProjectRequestTests {
 		assertEquals 'com.foo.bar', request.packageName
 	}
 
-	@Test
-	void resolveAdditionalBoms() {
-		def request = new ProjectRequest()
-		def dependency = new Dependency(id: 'foo', bom: 'foo-bom')
-		def bom = new BillOfMaterials(groupId: 'com.example', artifactId: 'foo-bom',
-				version: '1.0.0', additionalBoms: ['bar-bom'])
-		def additionalBom = new BillOfMaterials(groupId: 'com.example',
-				artifactId: 'bar-bom', version: '1.1.0')
-		def metadata = InitializrMetadataTestBuilder
-				.withDefaults()
-				.addBom('foo-bom', bom)
-				.addBom('bar-bom', additionalBom)
-				.addDependencyGroup('test', dependency)
-				.build()
-		request.style << 'foo'
-		request.resolve(metadata)
-		assertEquals(1, request.resolvedDependencies.size())
-		assertEquals 2, request.boms.size()
-		assertEquals bom, request.boms['foo-bom']
-		assertEquals additionalBom, request.boms['bar-bom']
-	}
 
-	@Test
-	void resolveAdditionalBomsDuplicates() {
-		def request = new ProjectRequest()
-		def dependency = new Dependency(id: 'foo', bom: 'foo-bom')
-		def anotherDependency = new Dependency(id: 'bar', bom: 'bar-bom')
-		def bom = new BillOfMaterials(groupId: 'com.example', artifactId: 'foo-bom',
-				version: '1.0.0', additionalBoms: ['bar-bom'])
-		def additionalBom = new BillOfMaterials(groupId: 'com.example',
-				artifactId: 'bar-bom', version: '1.1.0')
-		def metadata = InitializrMetadataTestBuilder
-				.withDefaults()
-				.addBom('foo-bom', bom)
-				.addBom('bar-bom', additionalBom)
-				.addDependencyGroup('test', dependency, anotherDependency)
-				.build()
-		request.style << 'foo' << 'bar'
-		request.resolve(metadata)
-		assertEquals(2, request.resolvedDependencies.size())
-		assertEquals 2, request.boms.size()
-		assertEquals bom, request.boms['foo-bom']
-		assertEquals additionalBom, request.boms['bar-bom']
-	}
 
-	@Test
-	void resolveAdditionalRepositories() {
-		def request = new ProjectRequest()
-		def dependency = new Dependency(id: 'foo', bom: 'foo-bom', repository: 'foo-repo')
-		def bom = new BillOfMaterials(groupId: 'com.example', artifactId: 'foo-bom',
-				version: '1.0.0', repositories: ['bar-repo'])
-		def metadata = InitializrMetadataTestBuilder
-				.withDefaults()
-				.addBom('foo-bom', bom)
-				.addRepository('foo-repo', 'foo-repo', 'http://example.com/foo', false)
-				.addRepository('bar-repo', 'bar-repo', 'http://example.com/bar', false)
-				.addDependencyGroup('test', dependency)
-				.build()
-		request.style << 'foo'
-		request.resolve(metadata)
-		assertEquals(1, request.resolvedDependencies.size())
-		assertEquals 1, request.boms.size()
-		assertEquals 2, request.repositories.size()
-		assertEquals metadata.configuration.env.repositories['foo-repo'],
-				request.repositories['foo-repo']
-		assertEquals metadata.configuration.env.repositories['bar-repo'],
-				request.repositories['bar-repo']
-	}
 
-	@Test
-	void resolveAdditionalRepositoriesDuplicates() {
-		def request = new ProjectRequest()
-		def dependency = new Dependency(id: 'foo', bom: 'foo-bom', repository: 'foo-repo')
-		def anotherDependency = new Dependency(id: 'bar', repository: 'bar-repo')
-		def bom = new BillOfMaterials(groupId: 'com.example', artifactId: 'foo-bom',
-				version: '1.0.0', repositories: ['bar-repo'])
-		def metadata = InitializrMetadataTestBuilder
-				.withDefaults()
-				.addBom('foo-bom', bom)
-				.addRepository('foo-repo', 'foo-repo', 'http://example.com/foo', false)
-				.addRepository('bar-repo', 'bar-repo', 'http://example.com/bar', false)
-				.addDependencyGroup('test', dependency, anotherDependency)
-				.build()
-		request.style << 'foo' << 'bar'
-		request.resolve(metadata)
-		assertEquals(2, request.resolvedDependencies.size())
-		assertEquals 1, request.boms.size()
-		assertEquals 2, request.repositories.size()
-		assertEquals metadata.configuration.env.repositories['foo-repo'],
-				request.repositories['foo-repo']
-		assertEquals metadata.configuration.env.repositories['bar-repo'],
-				request.repositories['bar-repo']
-	}
+
+
+
 
 	private static void assertBootStarter(Dependency actual, String name) {
 		def expected = new Dependency()

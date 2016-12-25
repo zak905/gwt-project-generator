@@ -45,14 +45,12 @@
 			<scope>provided</scope><% if (it.type != null) { %>
 			<type>${it.type}</type><% } %>
 		</dependency><% } %>
-		<% testDependencies.each { %>
-		<dependency>
-			<groupId>${it.groupId}</groupId>
-			<artifactId>${it.artifactId}</artifactId><% if (it.version != null) { %>
-			<version>${it.version}</version><% } %>
-			<scope>test</scope><% if (it.type != null) { %>
-			<type>${it.type}</type><% } %>
-		</dependency><% } %>
+	  <dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>4.11</version>
+		<scope>test</scope>
+	</dependency>
 	</dependencies>
 
 	<build>

@@ -4,6 +4,10 @@
   <inherits name="com.google.gwt.user.theme.clean.Clean" />
 
   <source path="" />
+  <!-- Libs inherits -->
+  <% providedDependencies.each { %>
+    <inherits name="${it.dependencyModule}" />
+   <% } %>
 
   <entry-point class="${packageName}.App" />
 

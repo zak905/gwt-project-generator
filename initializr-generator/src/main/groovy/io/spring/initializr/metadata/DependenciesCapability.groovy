@@ -71,12 +71,6 @@ class DependenciesCapability extends ServiceCapability<List<DependencyGroup>> {
 				if (!dependency.versionRange && group.versionRange) {
 					dependency.versionRange = group.versionRange
 				}
-				if (!dependency.bom && group.bom) {
-					dependency.bom = group.bom
-				}
-				if (!dependency.repository && group.repository) {
-					dependency.repository = group.repository
-				}
 
 				dependency.resolve()
 				indexDependency(dependency.id, dependency)

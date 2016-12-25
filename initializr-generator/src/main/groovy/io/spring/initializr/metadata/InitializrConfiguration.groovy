@@ -153,17 +153,8 @@ class InitializrConfiguration {
 		 */
 		boolean forceSsl = true
 
-		/**
-		 * The "BillOfMaterials" that are referenced in this instance, identified by an
-		 * arbitrary identifier that can be used in the dependencies definition.
-		 */
-		final Map<String, BillOfMaterials> boms = [:]
 
-		/**
-		 * The "Repository" instances that are referenced in this instance, identified by
-		 * an arbitrary identifier that can be used in the dependencies definition.
-		 */
-		final Map<String, Repository> repositories = [:]
+
 
 		/**
 		 * Gradle-specific settings.
@@ -177,10 +168,6 @@ class InitializrConfiguration {
 		final Maven maven = new Maven()
 
 		Env() {
-			repositories['spring-snapshots'] = new Repository(name: 'Spring Snapshots',
-					url: new URL('https://repo.spring.io/snapshot'), snapshotsEnabled: true)
-			repositories['spring-milestones'] = new Repository(name: 'Spring Milestones',
-					url: new URL('https://repo.spring.io/milestone'), snapshotsEnabled: false)
 		}
 
 		void setArtifactRepository(String artifactRepository) {
@@ -191,9 +178,7 @@ class InitializrConfiguration {
 		}
 
 		void validate() {
-			boms.each {
-				it.value.validate()
-			}
+
 		}
 
 		void merge(Env other) {
@@ -205,16 +190,6 @@ class InitializrConfiguration {
 			forceSsl = other.forceSsl
 			gradle.merge(other.gradle)
 			maven.merge(other.maven)
-			other.boms.each { id, bom ->
-				if (!boms[id]) {
-					boms[id] = bom
-				}
-			}
-			other.repositories.each { id, repo ->
-				if (!repositories[id]) {
-					repositories[id] = repo
-				}
-			}
 		}
 
 		static class Gradle {

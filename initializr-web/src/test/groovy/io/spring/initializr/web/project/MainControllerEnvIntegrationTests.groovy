@@ -20,8 +20,7 @@ import io.spring.initializr.test.generator.ProjectAssert
 import io.spring.initializr.web.AbstractInitializrControllerIntegrationTests
 import org.junit.Test
 
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpStatus
+
 import org.springframework.http.ResponseEntity
 import org.springframework.test.context.ActiveProfiles
 
@@ -33,13 +32,7 @@ import static org.junit.Assert.*
 @ActiveProfiles(['test-default', 'test-custom-env'])
 class MainControllerEnvIntegrationTests extends AbstractInitializrControllerIntegrationTests {
 
-	@Test
-	void downloadCliWithCustomRepository() {
-		def entity = restTemplate.getForEntity(createUrl('/spring'), HttpEntity.class)
-		assertEquals HttpStatus.FOUND, entity.getStatusCode()
-		def expected = "https://repo.spring.io/lib-release/org/springframework/boot/spring-boot-cli/1.1.4.RELEASE/spring-boot-cli-1.1.4.RELEASE-bin.zip"
-		assertEquals new URI(expected), entity.getHeaders().getLocation()
-	}
+
 
 	@Test
 	void doNotForceSsl() {
