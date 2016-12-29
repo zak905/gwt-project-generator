@@ -1,0 +1,38 @@
+{
+  "dependencies": [
+    {
+      "id": "ui",
+      "name": "ui",
+      "description": "Ui-Library",
+      "group": "Core"
+    },
+    {
+      "id": "GWTP",
+      "name": "GWTP",
+      "group": "Frameworks"
+    },
+    {
+      "id": "com.gwidgets",
+      "name": "gwty-leaflet",
+      "group": "Misc",
+      "keywords": "leaflet"
+    },
+    {
+      "id": "org.acme:foo",
+      "name": "Foo",
+      "group": "Other",
+      "keywords": "thefoo,dafoo",
+      "weight": 42
+    },
+    {
+      "id": "org.acme:bar",
+      "name": "Bar",
+      "group": "Other"
+    },
+    {
+      "id": "my-api",
+      "name": "My API",
+      "group": "Other"
+    }
+  ]
+}

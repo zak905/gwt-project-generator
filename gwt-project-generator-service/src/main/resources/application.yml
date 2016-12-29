@@ -1,0 +1,201 @@
+logging:
+  level:
+    org.springframework.core.env: warn
+    org.springframework.jndi: warn
+
+server:
+  compression:
+    enabled: true
+    mime-types: application/json,text/css,text/html
+    min-response-size: 2048
+  port: 1988
+
+spring:
+  jackson:
+    serialization:
+     write-dates-as-timestamps: false
+  resources:
+    chain:
+      strategy:
+        content:
+          enabled: true
+
+debug: true
+
+initializr:
+  dependencies:
+    - name: Ui Librairies
+      content:
+        - name: gwt-polymer-elements
+          id: gwt-polymer
+          artifactId: vaadin-gwt-polymer-elements
+          scope: provided
+          groupId: com.vaadin.polymer
+          description: Ready to use Polymer elements GWT projects
+          version: 1.7.0.0
+          dependencyModule: com.vaadin.polymer.Elements
+        - name: gwt-material
+          id: gwtmaterial
+          artifactId: gwt-material
+          scope: provided
+          groupId: com.github.gwtmaterialdesign
+          description: a Material Design wrapper for GWT
+          version: 1.6
+          dependencyModule: gwt.material.design.GwtMaterialDesignBasic
+        - name: gwtbootstrap3
+          id: gwtbootstrap
+          description: A GWT wrapper for Bootstrap
+          version: 0.9.3
+          artifactId: gwtbootstrap3
+          scope: provided
+          groupId: org.gwtbootstrap3
+          dependencyModule: org.gwtbootstrap3.GwtBootstrap3
+    - name: Rest/HTTP clients
+      content:
+        - name: RestyGWT
+          id: restygwt
+          artifactId: restygwt
+          scope: provided
+          groupId: org.fusesource.restygwt
+          description: Like GWT-RPC but with REST/JSON coolness
+          version: 2.2.0
+          dependencyModule: org.fusesource.restygwt.RestyGWT
+        - name: autorest
+          id: autorest
+          artifactId: autorest-gwt
+          scope: provided
+          groupId: com.intendia.gwt.autorest
+          description: Auto RESTful Service Proxy Generator for GWT
+          version: 0.5
+          dependencyModule: com.intendia.gwt.autorest.AutoRest
+    - name: Frameworks
+      content:
+        - name: GWTP
+          id: gwtp
+          artifactId: gwtp-mvp-client
+          scope: provided
+          groupId: com.gwtplatform
+          description: A complete model-view-presenter framework to simplify your next GWT project.
+          version: 1.5.3
+          dependencyModule: com.gwtplatform.mvp.MvpWithEntryPoint
+        - name: Elemento
+          id: elemento
+          artifactId: elemento-core
+          scope: provided
+          groupId: org.jboss.gwt.elemento
+          description: Elemento brings HTML templates and other goodies to GWT Elemental
+          version: 0.5
+          dependencyModule: org.jboss.gwt.elemento.Core
+        - name: Angular2Boot
+          id: angular2boot
+          artifactId: angular2-gwt
+          scope: provided
+          groupId: fr.lteconsulting
+          description: Integration of Angular 2 and GWT 2.8
+          version: 1.6
+          dependencyModule: fr.lteconsulting.angular2gwt.Angular2Gwt
+    - name: Dependency Injection
+      content:
+        - name: Dagger
+          id: dagger
+          artifactId: dagger
+          scope: provided
+          groupId: com.google.dagger
+          description: A fast dependency injector
+          version: 2.8
+          dependencyModule: dagger.Dagger
+    - name: Utilities / Wrappers
+      content:
+        - name: rxjava-gwt
+          id: rxjavagwt
+          artifactId: rxjava-gwt
+          scope: provided
+          groupId: com.intendia.gwt
+          description: RxJava semi-automatic GWT compatibility library
+          version: 1.0.14-beta1
+          dependencyModule: rx.Rx
+        - name: gwt-ol3
+          id: gwtol3
+          artifactId: gwt-ol3
+          scope: provided
+          groupId: com.github.tdesjardins
+          description: An OpenLayers 3 (ol3) - Wrapper for GWT using the JSInterop-Features
+          version: 2.9.0
+          dependencyModule: ol.GwtOL3
+        - name: gwty-leaflet
+          id: gwtyleaflet
+          artifactId: gwty-leaflet
+          scope: provided
+          groupId: com.gwidgets
+          description: A GWT JsInterop wrapper for Leaflet.
+          version: 0.4
+          dependencyModule: com.gwidgets.api.GwtyLeaflet
+        - name: gwt-react
+          id: gwtreact
+          artifactId: gwt-react
+          scope: provided
+          groupId: com.github.gwtreact
+          description: GWT Java bindings for React
+          version: 0.3.0
+          dependencyModule: gwt.react.React
+        - name: gwtquery
+          id: gwtquery
+          description: A jQuery clone for GWT, and much more.
+          version: 2.1.0
+          artifactId: gwtquery
+          scope: provided
+          groupId: com.googlecode.gwtquery
+          dependencyModule: com.google.gwt.query.Query
+        - name: jqm4gwt
+          id: jqm4gwt
+          description: GWT library for jQuery Mobile
+          version: 2.1.0
+          artifactId: jqm4gwt-remote
+          scope: provided
+          groupId: com.sksamuel.jqm4gwt
+          dependencyModule: com.sksamuel.Jqm4gwt
+    - name: Test
+      content:
+        - name: gwtmockito
+          id: gwtmockito
+          artifactId: gwtmockito
+          scope: test
+          groupId: com.google.gwt.gwtmockito
+          description: Better GWT unit testing
+          version: 1.1.6
+
+  types:
+    - name: Maven Project
+      id: maven-project
+      description: Generate a Maven based project archive
+      sts-id: starter.zip
+      tags:
+        build: maven
+        format: project
+      default: true
+      action: /starter.zip
+    - name: Maven POM
+      id: maven-build
+      description: Generate a Maven pom.xml
+      sts-id: pom.xml
+      tags:
+        build: maven
+        format: build
+      default: false
+      action: /pom.xml
+  packagings:
+    - name: gwt-app
+      id: gwt-app
+      default: true
+    - name: gwt-lib
+      id: gwt-lib
+      default: false
+  javaVersions:
+    - id: 1.8
+      default: true
+  gwtVersions:
+    - name : 2.8.0
+      id: 2.8.0
+      default: true
+
+

@@ -1,0 +1,85 @@
+info:
+  spring-boot:
+    version: 1.1.4.RELEASE
+
+initializr:
+  dependencies:
+    - name: Ui Librairies
+      content:
+        - name: gwt-polymer-elements
+          id: gwt-polymer
+          artifactId: vaadin-gwt-polymer-elements
+          scope: provided
+          groupId: com.vaadin.polymer
+          description: Ready to use Polymer elements GWT projects
+          version: 1.7.0.0
+          dependencyModule: com.vaadin.polymer.Elements
+        - name: gwt-material
+          id: gwtmaterial
+          artifactId: gwt-material
+          scope: provided
+          groupId: com.github.gwtmaterialdesign
+          description: a Material Design wrapper for GWT
+          version: 1.6
+          dependencyModule: gwt.material.design.GwtMaterialDesignBasic
+        - name: gwtbootstrap3
+          id: gwtbootstrap
+          description: A GWT wrapper for Bootstrap
+          version: 0.9.3
+          artifactId: gwtbootstrap3
+          scope: provided
+          groupId: org.gwtbootstrap3
+          dependencyModule: org.gwtbootstrap3.GwtBootstrap3
+    - name: Rest/HTTP clients
+      content:
+        - name: RestyGWT
+          id: restygwt
+          artifactId: restygwt
+          scope: provided
+          groupId: org.fusesource.restygwt
+          description: Ready to use Polymer elements GWT projects
+          version: 2.2.0
+          dependencyModule: org.fusesource.restygwt.RestyGWT
+        - name: autorest
+          id: autorest
+          artifactId: autorest-gwt
+          scope: provided
+          groupId: com.intendia.gwt.autorest
+          description: Auto RESTful Service Proxy Generator for GWT
+          version: 0.5
+          dependencyModule: com.intendia.gwt.autorest.AutoRest
+    types:
+      - name: Maven Project
+        id: maven-project
+        description: Generate a Maven based project archive
+        sts-id: starter.zip
+        tags:
+          build: maven
+          format: project
+        default: true
+        action: /starter.zip
+      - name: Maven POM
+        id: maven-build
+        description: Generate a Maven pom.xml
+        sts-id: pom.xml
+        tags:
+          build: maven
+          format: build
+        default: false
+        action: /pom.xml
+    packagings:
+      - name: gwt-app
+        id: gwt-app
+        default: true
+      - name: gwt-lib
+        id: gwt-lib
+        default: false
+    javaVersions:
+      - id: 1.8
+        default: true
+      - id: 1.7
+        default: false
+    gwtVersions:
+      - name : 2.8.0
+        id: 2.8.0
+        default: true

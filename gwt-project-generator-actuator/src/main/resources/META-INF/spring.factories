@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.gwidgets.gwtprojectgenerator.actuate.autoconfigure.InitializrStatsAutoConfiguration,\
+com.gwidgets.gwtprojectgenerator.actuate.autoconfigure.InitializrMetricsConfiguration

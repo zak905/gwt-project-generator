@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.gwidgets.gwtprojectgenerator.web.autoconfigure.InitializrAutoConfiguration
+
+org.springframework.boot.env.EnvironmentPostProcessor=\
+com.gwidgets.gwtprojectgenerator.web.autoconfigure.CloudfoundryEnvironmentPostProcessor

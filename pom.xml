@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.spring.initializr</groupId>
-	<artifactId>initializr</artifactId>
+	<groupId>com.gwidgets</groupId>
+	<artifactId>gwt-project-generator</artifactId>
 	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Spring Initializr</name>
-	<description>A web-based quickstart generator for Spring projects</description>
-	<url>https://github.com/spring-io/initializr</url>
+	<name>GWT Project Generator</name>
+	<description>A web-based generator for quickly generating a GWT project</description>
+	<url>https://github.com/gwidgets/gwt-project-generator</url>
 	<organization>
 		<name>Pivotal Software, Inc.</name>
 		<url>http://www.spring.io</url>
@@ -43,37 +43,37 @@
 	</properties>
 
 	<modules>
-		<module>initializr-actuator</module>
-		<module>initializr-generator</module>
-		<module>initializr-web</module>
+		<module>gwt-project-generator-actuator</module>
+		<module>gwt-project-generator-generator</module>
+		<module>gwt-project-generator-web</module>
 	</modules>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>io.spring.initializr</groupId>
-				<artifactId>initializr-actuator</artifactId>
+				<groupId>com.gwidgets</groupId>
+				<artifactId>gwt-project-generator-actuator</artifactId>
 				<version>1.0.0.BUILD-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>io.spring.initializr</groupId>
-				<artifactId>initializr-generator</artifactId>
+				<groupId>com.gwidgets</groupId>
+				<artifactId>gwt-project-generator-generator</artifactId>
 				<version>1.0.0.BUILD-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>io.spring.initializr</groupId>
-				<artifactId>initializr-generator</artifactId>
+				<groupId>com.gwidgets</groupId>
+				<artifactId>gwt-project-generator-generator</artifactId>
 				<version>1.0.0.BUILD-SNAPSHOT</version>
 				<type>test-jar</type>
 			</dependency>
 			<dependency>
-				<groupId>io.spring.initializr</groupId>
-				<artifactId>initializr-web</artifactId>
+				<groupId>com.gwidgets</groupId>
+				<artifactId>gwt-project-generator-web</artifactId>
 				<version>1.0.0.BUILD-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>io.spring.initializr</groupId>
-				<artifactId>initializr-web</artifactId>
+				<groupId>com.gwidgets</groupId>
+				<artifactId>gwt-project-generator-web</artifactId>
 				<version>1.0.0.BUILD-SNAPSHOT</version>
 				<type>test-jar</type>
 			</dependency>
@@ -187,7 +187,7 @@
 		<profile>
 			<id>full</id>
 			<modules>
-				<module>initializr-service</module>
+				<module>gwt-project-generator-service</module>
 			</modules>
 		</profile>
 	</profiles>
