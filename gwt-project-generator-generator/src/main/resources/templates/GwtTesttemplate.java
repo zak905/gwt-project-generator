@@ -5,9 +5,10 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 
 
-public class GwtTesttemplate extends GWTTestCase {
+public class AppTests extends GWTTestCase {
 
-
-
+	public String getModuleName() {
+		return "module";
+	}
 
 }
