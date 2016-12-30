@@ -98,7 +98,7 @@ initializr:
       content:
         - name: Dagger
           id: dagger
-          artifactId: dagger
+          artifactId: dagger-gwt
           scope: provided
           groupId: com.google.dagger
           description: A fast dependency injector
