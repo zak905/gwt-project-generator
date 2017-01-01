@@ -31,6 +31,8 @@ class DependencyMetadata {
 	final Map<String, Dependency> dependencies
 
 
+
+
 	DependencyMetadata(Version gwtVersion, Map<String, Dependency> dependencies) {
 		this.gwtVersion = gwtVersion
 		this.dependencies = dependencies

@@ -96,6 +96,9 @@ class Dependency extends MetadataElement {
 	@JsonIgnore
 	String dependencyModule
 
+	@JsonIgnore
+	List<String> gwtVersionCompatibility = []
+
 
 	List<String> keywords = []
 

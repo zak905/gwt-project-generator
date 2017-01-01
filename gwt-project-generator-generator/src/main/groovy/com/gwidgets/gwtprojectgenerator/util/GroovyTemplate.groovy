@@ -51,7 +51,7 @@ class GroovyTemplate {
 			throws IOException, CompilationFailedException, ClassNotFoundException {
 		def template = getTemplate(name)
 		def writable = template.make(model)
-		log.info("writable " + writable.toString())
+//		log.info("writable " + writable.toString())
 		def result = new StringWriter()
 		writable.writeTo(result)
 		result.toString()

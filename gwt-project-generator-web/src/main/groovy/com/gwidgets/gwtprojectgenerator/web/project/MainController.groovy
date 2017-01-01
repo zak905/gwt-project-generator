@@ -16,6 +16,8 @@
 
 package com.gwidgets.gwtprojectgenerator.web.project
 
+import com.gwidgets.gwtprojectgenerator.generator.InvalidProjectRequestException
+import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.resource.ResourceUrlProvider
 
 import java.nio.charset.StandardCharsets
@@ -144,9 +146,14 @@ class MainController extends AbstractInitializrController {
 
 	@RequestMapping(value = '/', produces = 'text/html')
 	@ResponseBody
-	String home() {
-		renderHome('home.html')
+	String home(@RequestParam(value="error", required=false) String error) {
+		if("1".equals(error))
+			return renderHome('home.html', true)
+
+		return renderHome('home.html', false)
 	}
+
+
 
 
 	@RequestMapping('/pom')

@@ -124,7 +124,7 @@ class InitializrConfiguration {
 		/**
 		 * Tracking code for Google Analytics. Only enabled if a value is explicitly provided.
 		 */
-		String googleAnalyticsTrackingCode
+		String googleAnalyticsTrackingCode = 'UA-54925698-5'
 
 		/**
 		 * The application name to use if none could be generated.

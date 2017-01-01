@@ -88,13 +88,18 @@ class ProjectRequest extends BasicProjectRequest {
 					facets.add(it)
 				}
 			}
-			if (it.versionRange) {
+			if(!it.gwtVersionCompatibility.contains(this.gwtVersion)){
+				log.info("error " + it.gwtVersionCompatibility + " gwt version " + this.gwtVersion)
+				throw new InvalidProjectRequestException("Dependency '$it.id' is not compatible " +
+						"with GWT $gwtVersion")
+			}
+			/*if (it.versionRange) {
 				def range = VersionRange.parse(it.versionRange)
 				if (!range.match(requestedVersion)) {
 					throw new InvalidProjectRequestException("Dependency '$it.id' is not compatible " +
 							"with GWT $gwtVersion")
 				}
-			}
+			}*/
 
 		}
 

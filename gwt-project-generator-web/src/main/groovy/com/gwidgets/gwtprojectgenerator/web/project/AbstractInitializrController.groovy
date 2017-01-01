@@ -57,15 +57,15 @@ abstract class AbstractInitializrController {
 
 	}
 
-	@ExceptionHandler
+/*	@ExceptionHandler
 	public void invalidProjectRequest(HttpServletResponse response, InvalidProjectRequestException ex) {
 		response.sendError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
-	}
+	}*/
 
 	/**
 	 * Render the home page with the specified template.
 	 */
-	protected String renderHome(String templatePath) {
+	protected String renderHome(String templatePath, boolean hasErrors) {
 		def metadata = metadataProvider.get()
 
 		def model = [:]
@@ -83,6 +83,9 @@ abstract class AbstractInitializrController {
 
 		// Google analytics support
 		model['trackingCode'] = metadata.configuration.env.googleAnalyticsTrackingCode
+
+		// if there are for submissions errors
+		model['hasErrors'] = hasErrors
 
 		// Linking to static resources
 		model['linkTo'] = this.linkTo
@@ -102,4 +105,16 @@ abstract class AbstractInitializrController {
 		builder.build()
 	}
 
+	// Total control - setup a model and return the view name yourself. Or
+	// consider subclassing ExceptionHandlerExceptionResolver (see below).
+	@ExceptionHandler
+	public void InvalidProjectRequestException(HttpServletResponse response, InvalidProjectRequestException ex) {
+
+        response.sendRedirect("/?error=1")
+       // response.
+       // response.getWriter().write(groovyTemplate.process ('home.html', model))
+
+	}
 }
+
+

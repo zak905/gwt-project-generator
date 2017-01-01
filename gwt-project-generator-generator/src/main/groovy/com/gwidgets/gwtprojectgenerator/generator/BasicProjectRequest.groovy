@@ -40,7 +40,6 @@ class BasicProjectRequest {
 	String packageName
 	String javaVersion
 	String moduleName
-
 	// The base directory to create in the archive - no baseDir by default
 	String baseDir
 

@@ -1,5 +1,0 @@
----
-applications:
-  - name: gwt-project-generator
-    buildpack: java_buildpack
-    path: gwt-project-generator-service\target\gwt-project-generator-service.jar

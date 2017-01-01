@@ -34,6 +34,7 @@ initializr:
           description: Ready to use Polymer elements GWT projects
           version: 1.7.0.0
           dependencyModule: com.vaadin.polymer.Elements
+          gwtVersionCompatibility: 2.8.0
         - name: gwt-material
           id: gwtmaterial
           artifactId: gwt-material
@@ -42,6 +43,7 @@ initializr:
           description: a Material Design wrapper for GWT
           version: 1.6
           dependencyModule: gwt.material.design.GwtMaterialDesignBasic
+          gwtVersionCompatibility: 2.7.0
         - name: gwtbootstrap3
           id: gwtbootstrap
           description: A GWT wrapper for Bootstrap
@@ -50,6 +52,7 @@ initializr:
           scope: provided
           groupId: org.gwtbootstrap3
           dependencyModule: org.gwtbootstrap3.GwtBootstrap3
+          gwtVersionCompatibility: 2.7.0,2.8.0
     - name: Rest/HTTP clients
       content:
         - name: RestyGWT
@@ -60,6 +63,7 @@ initializr:
           description: Like GWT-RPC but with REST/JSON coolness
           version: 2.2.0
           dependencyModule: org.fusesource.restygwt.RestyGWT
+          gwtVersionCompatibility: 2.7.0,2.8.0
         - name: autorest
           id: autorest
           artifactId: autorest-gwt
@@ -68,6 +72,7 @@ initializr:
           description: Auto RESTful Service Proxy Generator for GWT
           version: 0.5
           dependencyModule: com.intendia.gwt.autorest.AutoRest
+          gwtVersionCompatibility: 2.7.0,2.8.0
     - name: Frameworks
       content:
         - name: GWTP
@@ -78,6 +83,7 @@ initializr:
           description: A complete model-view-presenter framework to simplify your next GWT project.
           version: 1.5.3
           dependencyModule: com.gwtplatform.mvp.MvpWithEntryPoint
+          gwtVersionCompatibility: 2.7.0
         - name: Elemento
           id: elemento
           artifactId: elemento-core
@@ -86,6 +92,7 @@ initializr:
           description: Elemento brings HTML templates and other goodies to GWT Elemental
           version: 0.5
           dependencyModule: org.jboss.gwt.elemento.Core
+          gwtVersionCompatibility: 2.8.0
         - name: Angular2Boot
           id: angular2boot
           artifactId: angular2-gwt
@@ -94,6 +101,7 @@ initializr:
           description: Integration of Angular 2 and GWT 2.8
           version: 1.6
           dependencyModule: fr.lteconsulting.angular2gwt.Angular2Gwt
+          gwtVersionCompatibility: 2.8.0
     - name: Dependency Injection
       content:
         - name: Dagger
@@ -104,6 +112,7 @@ initializr:
           description: A fast dependency injector
           version: 2.8
           dependencyModule: dagger.Dagger
+          gwtVersionCompatibility: 2.7.0,2.8.0
     - name: Utilities / Wrappers
       content:
         - name: rxjava-gwt
@@ -114,6 +123,7 @@ initializr:
           description: RxJava semi-automatic GWT compatibility library
           version: 1.0.14-beta1
           dependencyModule: rx.Rx
+          gwtVersionCompatibility: 2.8.0
         - name: gwt-ol3
           id: gwtol3
           artifactId: gwt-ol3
@@ -122,6 +132,7 @@ initializr:
           description: An OpenLayers 3 (ol3) - Wrapper for GWT using the JSInterop-Features
           version: 2.9.0
           dependencyModule: ol.GwtOL3
+          gwtVersionCompatibility: 2.8.0
         - name: gwty-leaflet
           id: gwtyleaflet
           artifactId: gwty-leaflet
@@ -130,6 +141,7 @@ initializr:
           description: A GWT JsInterop wrapper for Leaflet.
           version: 0.4
           dependencyModule: com.gwidgets.api.GwtyLeaflet
+          gwtVersionCompatibility: 2.8.0
         - name: gwt-react
           id: gwtreact
           artifactId: gwt-react
@@ -138,6 +150,7 @@ initializr:
           description: GWT Java bindings for React
           version: 0.3.0
           dependencyModule: gwt.react.React
+          gwtVersionCompatibility: 2.8.0
         - name: gwtquery
           id: gwtquery
           description: A jQuery clone for GWT, and much more.
@@ -146,6 +159,7 @@ initializr:
           scope: provided
           groupId: com.googlecode.gwtquery
           dependencyModule: com.google.gwt.query.Query
+          gwtVersionCompatibility: 2.7.0,2.8.0
         - name: jqm4gwt
           id: jqm4gwt
           description: GWT library for jQuery Mobile
@@ -154,6 +168,7 @@ initializr:
           scope: provided
           groupId: com.sksamuel.jqm4gwt
           dependencyModule: com.sksamuel.Jqm4gwt
+          gwtVersionCompatibility: 2.8.0
     - name: Test
       content:
         - name: gwtmockito
@@ -163,7 +178,7 @@ initializr:
           groupId: com.google.gwt.gwtmockito
           description: Better GWT unit testing
           version: 1.1.6
-
+          gwtVersionCompatibility: 2.8.0
   types:
     - name: Maven Project
       id: maven-project
@@ -196,6 +211,9 @@ initializr:
   gwtVersions:
     - name : 2.8.0
       id: 2.8.0
+      default: true
+    - name : 2.7.0
+      id: 2.7.0
       default: true
 
 

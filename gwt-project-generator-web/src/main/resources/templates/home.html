@@ -19,6 +19,12 @@
             </div>
         </div>
         <div class="container start-main">
+            <div class="row
+            <% if (!hasErrors) {
+                out.print 'hidden'
+             }%>" style="color:red; font-size: x-large; border: solid 1px;">
+                <p>There are versions compatibility errors, you can fix and generate again </p>
+            </div>
             <div class="row form-inline text-center">
                 <div class="form-group project-choice">
                     <h2>Generate a
@@ -145,6 +151,8 @@
                                 <% if (it.versionRequirement) { %>
                                 <p class="help-block version-requirement">requires Spring Boot ${it.versionRequirement}</p>
                                 <% } %>
+                                <p class="help-block">GWT version compatibility: <% it.gwtVersionCompatibility.each { %> ${it} <% } %></p>
+
                             </label>
                         </div>
                         <% } %>
