@@ -1,0 +1,15 @@
+language: java
+
+after_success:
+  - cd gwt-project-generator-service && mvn package -Dmaven.test.skip=true
+
+before_deploy: cd gwt-project-generator-service
+
+deploy:
+  edge: true
+  provider: cloudfoundry
+  username: $CI_PWS_USERNAME
+  password: $CI_PWS_PASSWORD
+  api: https://api.run.pivotal.io
+  organization: $CI_PWS_ORG
+  space: gwt-project-generator
