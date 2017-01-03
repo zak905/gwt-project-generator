@@ -83,9 +83,38 @@
 				<artifactId>gwt-maven-plugin</artifactId>
 				<extensions>true</extensions>
 				<configuration>
+					<startupUrls>
+						<startupUrl>${moduleName}.html</startupUrl>
+					</startupUrls>
+					<warDir><% out.print '${project.build.directory}/${project.build.finalName}' %></warDir>
+					<devmodeWorkDir><% out.print '${project.build.directory}/${project.build.finalName}' %></devmodeWorkDir>
+					<classpathScope>compile</classpathScope>
 					<moduleName>${packageName}.${moduleName}</moduleName>
 					<moduleShortName>${moduleName}</moduleShortName>
 				</configuration>
+			</plugin>
+			<!-- only used to copy static resources -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>src/main/webapp</directory>
+						</resource>
+					</webResources>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+				<executions>
+					<execution>
+						<id>war</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>war</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
