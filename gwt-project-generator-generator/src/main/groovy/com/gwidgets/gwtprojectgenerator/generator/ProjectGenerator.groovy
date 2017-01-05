@@ -150,7 +150,12 @@ class ProjectGenerator {
 		def resources = new File(main, 'resources')
 		resources.mkdir()
 
-		write(new File(main, "module.gwt.xml"), "module.gwt.xml", model)
+		if (!isGradleBuild(request)) {
+			write(new File(main, "module.gwt.xml"), "module.gwt.xml", model)
+		}else{
+			write(new File(java, request.moduleName+".gwt.xml"), "module.gwt.xml", model)
+		}
+
 
 		def webapp = new File(main, "webapp")
 		webapp.mkdir()
@@ -277,7 +282,7 @@ class ProjectGenerator {
 
 
 	private byte[] doGenerateGradleBuild(Map model) {
-		groovyTemplate.process 'build.gradle'
+		groovyTemplate.process 'build.gradle', model
 	}
 
 

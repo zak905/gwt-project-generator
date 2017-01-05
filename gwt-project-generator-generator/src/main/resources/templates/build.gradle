@@ -1,51 +1,41 @@
 buildscript {
-	ext {<% buildProperties.gradle.each { %>
-		${it.key} = '${it.value.call()}'<% } %>
-	}
-	repositories {
-		mavenCentral()<% if (!bootVersion.contains("RELEASE")) { %>
-		maven { url "https://repo.spring.io/snapshot" }
-		maven { url "https://repo.spring.io/milestone" }<% } %>
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:\${springBootVersion}")<% if (!bootOneThreeAvailable) { %>
-		classpath('io.spring.gradle:dependency-management-plugin:${dependencyManagementPluginVersion}')<% } %><% if (language=='kotlin') { %>
-		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:\${kotlinVersion}")<% } %>
-	}
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
+    }
 }
 
-apply plugin: '${language}'<% if (packaging=='war') {  %>
-apply plugin: 'eclipse-wtp'<% } else { %>
-apply plugin: 'eclipse'<% } %>
-apply plugin: '${springBootPluginName}'<% if (!bootOneThreeAvailable) { %>
-apply plugin: 'io.spring.dependency-management'<% } %><% if (packaging=='war') {  %>
+apply plugin: 'gwt'
 apply plugin: 'war'
-<% } %>
 
-<% if (packaging=='war') {  %>war<% } else { %>jar<% } %> {
-	baseName = '${artifactId}'
-	version = '${version}'
-}
-sourceCompatibility = ${javaVersion}
-targetCompatibility = ${javaVersion}
-
+// In this section you declare where to find the dependencies of your project
 repositories {
-	mavenCentral()<% if (repositories) { repositories.each { key, repo -> %>
-	maven { url "${repo.url}" }<% }} %>
+    jcenter()
 }
 
-<% if (providedDependencies) { %>configurations {
-	providedRuntime
-}
-<% } %><% if (buildProperties.versions) { %><%buildProperties.versions.each { %>
-ext['${it.key}'] = '${it.value.call()}'<% } %>
-<% } %>
+repositories { mavenCentral() }
+
+// In this section you declare the dependencies for your production and test code
 dependencies {<% compileDependencies.each { %>
-	compile('${it.groupId}:${it.artifactId}${it.version ? ":$it.version" : ""}${it.type ? "@$it.type" : ""}')<% } %><% if (language=='groovy') { %>
-	compile('org.codehaus.groovy:groovy')<% } %><% if (language=='kotlin') { %>
-	runtime('${it.groupId}:${it.artifactId}${it.version ? ":$it.version" : ""}${it.type ? "@$it.type" : ""}')<% } %><% compileOnlyDependencies.each { %>
-	compileOnly('${it.groupId}:${it.artifactId}${it.version ? ":$it.version" : ""}${it.type ? "@$it.type" : ""}')<% } %><% providedDependencies.each { %>
-	providedRuntime('${it.groupId}:${it.artifactId}${it.version ? ":$it.version" : ""}${it.type ? "@$it.type" : ""}')<% } %>
-	testCompile('org.springframework.boot:spring-boot-starter-test')<% testDependencies.each { %>
-	testCompile('${it.groupId}:${it.artifactId}${it.version ? ":$it.version" : ""}${it.type ? "@$it.type" : ""}')<% } %>
+    compile('${it.groupId}:${it.artifactId}${it.version ? ":$it.version" : ""}${it.type ? "@$it.type" : ""}')<% } %><% runtimeDependencies.each { %>
+    runtime('${it.groupId}:${it.artifactId}${it.version ? ":$it.version" : ""}${it.type ? "@$it.type" : ""}')<% } %><% compileOnlyDependencies.each { %>
+    compileOnly('${it.groupId}:${it.artifactId}${it.version ? ":$it.version" : ""}${it.type ? "@$it.type" : ""}')<% } %><% providedDependencies.each { %>
+    providedCompile('${it.groupId}:${it.artifactId}${it.version ? ":$it.version" : ""}${it.type ? "@$it.type" : ""}')<% } %>
+    testCompile('junit:junit:4.11')<% testDependencies.each { %>
+    testCompile('${it.groupId}:${it.artifactId}${it.version ? ":$it.version" : ""}${it.type ? "@$it.type" : ""}')<% } %>
+
+}
+
+gwt {
+    gwtVersion='${gwtVersion}'
+
+    modules '${packageName}.${moduleName}'
+
+    maxHeapSize = "1024M"
+    
+    superDev {
+        noPrecompile=true
+    }
 }

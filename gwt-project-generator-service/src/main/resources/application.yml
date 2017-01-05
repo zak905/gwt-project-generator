@@ -198,6 +198,24 @@ initializr:
         format: build
       default: false
       action: /pom.xml
+    - name: Gradle Project
+      id: gradle-project
+      description: Generate a Gradle based project archive
+      sts-id: gradle.zip
+      tags:
+        build: gradle
+        format: project
+      default: false
+      action: /starter.zip
+    - name: Gradle Config
+      id: gradle-build
+      description: Generate a Gradle build file
+      sts-id: build.gradle
+      tags:
+        build: gradle
+        format: build
+      default: false
+      action: /build.gradle
   packagings:
     - name: gwt-app
       id: gwt-app
