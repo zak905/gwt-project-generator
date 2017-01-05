@@ -3,11 +3,6 @@ language: java
 jdk:
   - oraclejdk8
 
-script:
-  - mvn install -Dmaven.test.skip=true
-  - cd gwt-project-generator-service && mvn package -Dmaven.test.skip=true
-
-
 before_deploy: cd gwt-project-generator-service
 
 deploy:
