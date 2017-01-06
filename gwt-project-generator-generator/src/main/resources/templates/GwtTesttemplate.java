@@ -1,4 +1,4 @@
-package com.gwidgets.temp.client;
+package ${packageName};
 
 
 import com.google.gwt.core.client.GWT;
