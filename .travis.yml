@@ -7,7 +7,8 @@ install: true
 
 script:
   - mvn install -Dmaven.test.skip=true
-  - cd gwt-project-generator-service && mvn package -Dmaven.test.skip=true
+  - cd gwt-project-generator-service
+  - mvn package -Dmaven.test.skip=true
 
 
 
