@@ -232,6 +232,6 @@ initializr:
       default: true
     - name : 2.7.0
       id: 2.7.0
-      default: true
+      default: false
 
 

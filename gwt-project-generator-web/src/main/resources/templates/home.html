@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="container start-main">
-            <div class="row
+            <div id="error-message" class="row
             <% if (!hasErrors) {
                 out.print 'hidden'
              }%>" style="color:red; font-size: x-large; border: solid 1px;">
@@ -146,12 +146,13 @@
                         <% it.content.each { %>
                         <div class="checkbox" data-range="${it.versionRange?:''}">
                             <label>
-                                <input tabindex="13" type="checkbox" name="style" value="${it.id}">${it.name}
+                                <input tabindex="13" type="checkbox" name="style" id="${it.id}" value="${it.id}">${it.name}
                                 <p class="help-block">${it.description}</p>
                                 <% if (it.versionRequirement) { %>
                                 <p class="help-block version-requirement">requires Spring Boot ${it.versionRequirement}</p>
                                 <% } %>
-                                <p class="help-block">GWT version compatibility: <% it.gwtVersionCompatibility.each { %> ${it} <% } %></p>
+                                <p class="help-block"><span>GWT version compatibility: </span><span class="gwt-compatibility" style="font-weight:bold;"><% it.gwtVersionCompatibility.each { %> ${it} <% } %></span></p>
+                                <p class="compatibility-error">dependency not compatible with the chosen GWT version</p>
 
                             </label>
                         </div>

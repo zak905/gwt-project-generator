@@ -20,6 +20,7 @@ import com.gwidgets.gwtprojectgenerator.generator.InvalidProjectRequestException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.resource.ResourceUrlProvider
 
+import javax.servlet.http.HttpServletResponse
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.TimeUnit
 
@@ -146,9 +147,12 @@ class MainController extends AbstractInitializrController {
 
 	@RequestMapping(value = '/', produces = 'text/html')
 	@ResponseBody
-	String home(@RequestParam(value="error", required=false) String error) {
+	String home(HttpServletResponse response, @RequestParam(value="error", required=false) String error) {
+
 		if("1".equals(error))
 			return renderHome('home.html', true)
+
+
 
 		return renderHome('home.html', false)
 	}
@@ -222,6 +226,7 @@ class MainController extends AbstractInitializrController {
 		log.info("Uploading: ${download} (${download.bytes.length} bytes)")
 		ResponseEntity<byte[]> result = createResponseEntity(download.bytes, contentType, fileName)
 		projectGenerator.cleanTempFiles(dir)
+
 		result
 	}
 

@@ -66,6 +66,8 @@ abstract class AbstractInitializrController {
 	 * Render the home page with the specified template.
 	 */
 	protected String renderHome(String templatePath, boolean hasErrors) {
+
+
 		def metadata = metadataProvider.get()
 
 		def model = [:]
@@ -109,11 +111,7 @@ abstract class AbstractInitializrController {
 	// consider subclassing ExceptionHandlerExceptionResolver (see below).
 	@ExceptionHandler
 	public void InvalidProjectRequestException(HttpServletResponse response, InvalidProjectRequestException ex) {
-
         response.sendRedirect("/?error=1")
-       // response.
-       // response.getWriter().write(groovyTemplate.process ('home.html', model))
-
 	}
 }
 

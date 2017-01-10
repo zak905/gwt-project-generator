@@ -122,6 +122,41 @@ $(function () {
         $(".btn-primary").append("<kbd>alt + &#9166;</kbd>");
     }
 
+
+    $(".checkbox input").change(function(evt){
+
+           var parentElement = $(this).parent();
+
+           if($(this).is(":checked")) {
+                if(checkGwtCompatibility(parentElement.find(".gwt-compatibility").get(0))){
+                      parentElement.find(".compatibility-error").css("display", "none");
+                }else{
+                     parentElement.find(".compatibility-error").css("display", "block");
+                }
+            }else{
+                parentElement.find(".compatibility-error").css("display", "none");
+
+            }
+        });
+
+        $( "form" ).submit(function(event) {
+                   $("#error-message").hide();
+        });
+
+
+        var checkGwtCompatibility = function(element){
+            var currentGwtVersion = document.getElementById("gwtVersion").selectedOptions[0].innerText;
+            var gwtVersionsCompatibility = element.innerText.split(" ");
+            for(var i = 0; i < gwtVersionsCompatibility.length; i++){
+                if(currentGwtVersion == gwtVersionsCompatibility[i]){
+                      return true;
+                }
+              }
+              return false;
+        }
+
+
+
     var refreshDependencies = function (versionRange) {
         var versions = new Versions();
         $("#dependencies div.checkbox").each(function (idx, item) {
@@ -140,6 +175,7 @@ $(function () {
         if ($("#starters div[data-id='" + id + "']").length == 0) {
             $("#starters").append("<div class='tag' data-id='" + id + "'>" + name +
                 "<button type='button' class='close' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
+                console.log("new tag being added");
         }
     };
     var removeTag = function (id) {
