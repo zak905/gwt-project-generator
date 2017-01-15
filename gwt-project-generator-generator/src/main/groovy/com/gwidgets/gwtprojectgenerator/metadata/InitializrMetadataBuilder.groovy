@@ -16,6 +16,8 @@
 
 package com.gwidgets.gwtprojectgenerator.metadata
 
+import groovy.util.logging.Slf4j
+
 import java.nio.charset.Charset
 
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -154,6 +156,7 @@ class InitializrMetadataBuilder {
 			metadata.gwtVersions.merge(properties.gwtVersions)
 			metadata.packagings.merge(properties.packagings)
 			metadata.javaVersions.merge(properties.javaVersions)
+			metadata.mavenPluginType.merge(properties.mavenPluginType)
 			properties.groupId.apply(metadata.groupId)
 			properties.artifactId.apply(metadata.artifactId)
 			properties.version.apply(metadata.version)

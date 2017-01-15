@@ -122,26 +122,45 @@ $(function () {
         $(".btn-primary").append("<kbd>alt + &#9166;</kbd>");
     }
 
-
-    $(".checkbox input").change(function(evt){
-
-           var parentElement = $(this).parent();
-
-           if($(this).is(":checked")) {
-                if(checkGwtCompatibility(parentElement.find(".gwt-compatibility").get(0))){
-                      parentElement.find(".compatibility-error").css("display", "none");
-                }else{
-                     parentElement.find(".compatibility-error").css("display", "block");
-                }
-            }else{
-                parentElement.find(".compatibility-error").css("display", "none");
-
-            }
-        });
-
         $( "form" ).submit(function(event) {
                    $("#error-message").hide();
         });
+
+        var checkAllDependencies = function(){
+            $(".checkbox input").each(function(evt){
+               var parentElement = $(this).parent();
+
+                    if(checkGwtCompatibility(parentElement.find(".gwt-compatibility").get(0))){
+                          parentElement.find(".compatibility-error").css("display", "none");
+                    }else{
+                         parentElement.find(".compatibility-error").css("display", "block");
+                    }
+            });
+
+         }
+
+
+           $("#mavenPluginTypeSelect").change(function(evt){
+               if($(this).get(0).selectedOptions[0].innerText == "org.codehaus.mojo") {
+                       $("#packaging").empty();
+                       var warSelect = document.createElement("option");
+                       warSelect.value = "war";
+                       warSelect.innerText = "war";
+                       $("#packaging").get(0).appendChild(warSelect);
+                }else{
+                    $("#packaging").empty();
+                       var gwtAppSelect = document.createElement("option");
+                       gwtAppSelect.value = "gwt-app";
+                       gwtAppSelect.innerText = "gwt-app";
+
+                       var gwtLibSelect = document.createElement("option");
+                       gwtLibSelect.value = "gwt-lib";
+                       gwtLibSelect.innerText = "gwt-lib";
+
+                       $("#packaging").get(0).appendChild(gwtAppSelect);
+                       $("#packaging").get(0).appendChild(gwtLibSelect);
+                }
+            });
 
 
         var checkGwtCompatibility = function(element){
@@ -175,7 +194,6 @@ $(function () {
         if ($("#starters div[data-id='" + id + "']").length == 0) {
             $("#starters").append("<div class='tag' data-id='" + id + "'>" + name +
                 "<button type='button' class='close' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
-                console.log("new tag being added");
         }
     };
     var removeTag = function (id) {
@@ -195,6 +213,11 @@ $(function () {
     refreshDependencies($("#gwtVersion").val());
     $("#type").on('change', function () {
         $("#form").attr('action', $(this.options[this.selectedIndex]).attr('data-action'))
+          if($(this).get(0).selectedOptions[0].innerText == "Maven Project"){
+                      $("#mavenPluginType").show();
+                 }else{
+                      $("#mavenPluginType").hide();
+                 }
     });
     $("#artifactId").on('change', function () {
         $("#baseDir").attr('value', this.value)
@@ -202,6 +225,7 @@ $(function () {
     $("#gwtVersion").on("change", function (e) {
         refreshDependencies(this.value);
         initializeSearchEngine(starters, this.value);
+        checkAllDependencies();
     });
     $(".tofullversion a").on("click", function() {
         $(".full").removeClass("hidden");
@@ -302,6 +326,10 @@ $(function () {
             e.returnValue = false;
         }
     });
+
+     $(document).ready(function(){
+               checkAllDependencies();
+        });
 
     applyParams();
     if ("onhashchange" in window) {

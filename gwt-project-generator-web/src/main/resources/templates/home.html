@@ -45,6 +45,16 @@
                 </div>
             </div>
 
+            <div id="mavenPluginType" class="row form-inline text-center" >
+                <h2> and Maven Plugin Type:</h2>
+                <select tabindex="1" class="form-control" name="mavenPluginType" id="mavenPluginTypeSelect">
+                    <% mavenPluginType.content.each { %>
+                    <option value="${it.name}" ${it.default==true ?
+                    ' selected' : ''}>${it.name}</option>
+                    <% } %>
+                </select>
+            </div>
+
             <input id="baseDir" name="baseDir" type="hidden" value="${artifactId.content}">
 
             <div class="row">

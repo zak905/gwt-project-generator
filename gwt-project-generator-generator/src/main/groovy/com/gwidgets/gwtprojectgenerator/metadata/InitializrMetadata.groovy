@@ -55,6 +55,8 @@ class InitializrMetadata {
 
 	final TextCapability moduleName = new TextCapability('moduleName', 'module name', 'name of the GWT module');
 
+	final SingleSelectCapability mavenPluginType = new SingleSelectCapability('mavenPluginType', 'maven plugin type', 'the type of GWT maven plugin');
+
 	InitializrMetadata() {
 		this(new InitializrConfiguration())
 	}
@@ -81,6 +83,7 @@ class InitializrMetadata {
 		this.version.merge(other.version)
 		this.packageName.merge(other.packageName)
 		this.moduleName.merge(other.moduleName)
+		this.mavenPluginType.merge(other.mavenPluginType)
 	}
 
 	/**
@@ -90,9 +93,6 @@ class InitializrMetadata {
 		this.configuration.validate()
 		dependencies.validate()
 	}
-
-
-
 
 	/**
 	 * Return the defaults for the capabilities defined on this instance.
@@ -110,6 +110,7 @@ class InitializrMetadata {
 		defaults['description'] = description.content
 		defaults['packageName'] = packageName.content
 		defaults['moduleName'] = moduleName.content
+		defaults['mavenPluginType'] = defaultId(mavenPluginType)
 		defaults
 	}
 

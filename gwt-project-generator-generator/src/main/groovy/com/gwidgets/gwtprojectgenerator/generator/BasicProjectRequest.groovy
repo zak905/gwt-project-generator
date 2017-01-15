@@ -40,6 +40,7 @@ class BasicProjectRequest {
 	String packageName
 	String javaVersion
 	String moduleName
+	String mavenPluginType
 	// The base directory to create in the archive - no baseDir by default
 	String baseDir
 

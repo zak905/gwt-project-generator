@@ -79,19 +79,45 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>net.ltgt.gwt.maven</groupId>
-				<artifactId>gwt-maven-plugin</artifactId>
-				<extensions>true</extensions>
-				<configuration>
-					<startupUrls>
-						<startupUrl>${moduleName}.html</startupUrl>
-					</startupUrls>
-					<warDir><% out.print '${project.build.directory}/${project.build.finalName}' %></warDir>
-					<devmodeWorkDir><% out.print '${project.build.directory}/${project.build.finalName}' %></devmodeWorkDir>
-					<classpathScope>compile</classpathScope>
-					<moduleName>${packageName}.${moduleName}</moduleName>
-					<moduleShortName>${moduleName}</moduleShortName>
-				</configuration>
+			<% if (mavenPluginType == "net.ltgt.gwt.maven") { %>
+			<groupId>net.ltgt.gwt.maven</groupId>
+			<artifactId>gwt-maven-plugin</artifactId>
+			<extensions>true</extensions>
+			<configuration>
+				<startupUrls>
+					<startupUrl>${moduleName}.html</startupUrl>
+				</startupUrls>
+				<warDir><% out.print '${project.build.directory}/${project.build.finalName}' %></warDir>
+				<devmodeWorkDir><% out.print '${project.build.directory}/${project.build.finalName}' %></devmodeWorkDir>
+				<classpathScope>compile</classpathScope>
+				<moduleName>${packageName}.${moduleName}</moduleName>
+				<moduleShortName>${moduleName}</moduleShortName>
+			</configuration>
+			<% } else{%>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>gwt-maven-plugin</artifactId>
+			<version>${gwtVersion}</version>
+			<executions>
+				<execution>
+					<goals>
+						<goal>compile</goal>
+						<goal>test</goal>
+					</goals>
+				</execution>
+			</executions>
+			<configuration>
+				<runTarget>${moduleName}.html</runTarget>
+				<modules>
+					<module>${packageName}.${moduleName}</module>
+				</modules>
+				<localWorkers>1</localWorkers>
+				<hostedWebapp><% out.print '${project.build.directory}/${project.build.finalName}' %></hostedWebapp>
+				<warSourceDirectory><% out.print '${project.build.directory}' %></warSourceDirectory>
+				<% if (gwtVersion == "2.8.0" ) { %>
+				<generateJsInteropExports>true</generateJsInteropExports>
+				<%}%>
+			</configuration>
+			<%}%>
 			</plugin>
 			<!-- only used to copy static resources -->
 			<plugin>

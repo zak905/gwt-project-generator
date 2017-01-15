@@ -16,6 +16,8 @@
 
 package com.gwidgets.gwtprojectgenerator.web.project
 
+import com.gwidgets.gwtprojectgenerator.metadata.SingleSelectCapability
+import groovy.util.logging.Slf4j
 import org.springframework.web.servlet.resource.ResourceUrlProvider
 
 import javax.servlet.http.HttpServletResponse
@@ -92,6 +94,9 @@ abstract class AbstractInitializrController {
 		// Linking to static resources
 		model['linkTo'] = this.linkTo
 
+        SingleSelectCapability cap = (SingleSelectCapability)model.get("mavenPluginType")
+		log.info("list " + cap.content.toListString())
+
 		groovyTemplate.process templatePath, model
 	}
 
@@ -109,10 +114,10 @@ abstract class AbstractInitializrController {
 
 	// Total control - setup a model and return the view name yourself. Or
 	// consider subclassing ExceptionHandlerExceptionResolver (see below).
-	@ExceptionHandler
+/*	@ExceptionHandler
 	public void InvalidProjectRequestException(HttpServletResponse response, InvalidProjectRequestException ex) {
         response.sendRedirect("/?error=1")
-	}
+	}*/
 }
 
 

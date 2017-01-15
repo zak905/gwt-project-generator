@@ -223,6 +223,9 @@ initializr:
     - name: gwt-lib
       id: gwt-lib
       default: false
+    - name: war
+      id: war
+      default: false
   javaVersions:
     - id: 1.8
       default: true
@@ -233,5 +236,12 @@ initializr:
     - name : 2.7.0
       id: 2.7.0
       default: false
+  mavenPluginType:
+    - name: org.codehaus.mojo
+      id: org.codehaus.mojo
+      default: false
+    - name: net.ltgt.gwt.maven
+      id: net.ltgt.gwt.maven
+      default: true
 
 

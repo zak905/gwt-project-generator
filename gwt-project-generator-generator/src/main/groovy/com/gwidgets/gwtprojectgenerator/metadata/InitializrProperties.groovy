@@ -101,6 +101,10 @@ class InitializrProperties extends InitializrConfiguration {
 	final SimpleElement moduleName = new SimpleElement(value: 'gwtmodule')
 
 
+	@JsonIgnore
+	final List<DefaultMetadataElement> mavenPluginType = []
+
+
 	static class SimpleElement {
 		/**
 		 * Element title.

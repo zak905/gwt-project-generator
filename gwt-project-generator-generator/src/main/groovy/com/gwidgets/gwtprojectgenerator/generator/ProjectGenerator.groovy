@@ -150,7 +150,7 @@ class ProjectGenerator {
 		def resources = new File(main, 'resources')
 		resources.mkdir()
 
-		if (!isGradleBuild(request)) {
+		if (!isGradleBuild(request) && !request.mavenPluginType.equals("org.codehaus.mojo")) {
 			write(new File(main, "module.gwt.xml"), "module.gwt.xml", model)
 		}else{
 			write(new File(java, request.moduleName+".gwt.xml"), "module.gwt.xml", model)

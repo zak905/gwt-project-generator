@@ -120,6 +120,14 @@ class ProjectRequest extends BasicProjectRequest {
 			}
 		}
 
+/*		if (this.mavenPluginType) {
+			log.info("received " + this.mavenPluginType)
+			def mavenPluginType = metadata.mavenPluginType.get(this.mavenPluginType)
+			if (!mavenPluginType) {
+				throw new InvalidProjectRequestException("Unknown maven plugin type '${this.mavenPluginType}' check project metadata")
+			}
+		}*/
+
 
 		if (!applicationName) {
 			this.applicationName = metadata.configuration.generateApplicationName(this.name)
@@ -148,17 +156,7 @@ class ProjectRequest extends BasicProjectRequest {
 	 * Update this request once it has been resolved with the specified {@link InitializrMetadata}.
 	 */
 	protected afterResolution(InitializrMetadata metadata) {
-		if (packaging == 'war') {
-			if (!hasWebFacet()) {
-				// Need to be able to bootstrap the web app
-				resolvedDependencies << metadata.dependencies.get('web')
-				facets << 'web'
-			}
-			// Add the tomcat starter in provided scope
-			def tomcat = new Dependency().asSpringBootStarter('tomcat')
-			tomcat.scope = Dependency.SCOPE_PROVIDED
-			resolvedDependencies << tomcat
-		}
+
 	}
 
 
